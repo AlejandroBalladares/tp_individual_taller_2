@@ -10,15 +10,14 @@
 //! ```
 //! El resultado esperado de una ejecución secuencial es 26.
 
+use std::sync::Arc;
+use std::sync::Mutex;
+use std::thread::{self, JoinHandle};
 use std::{
     fs::File,
     io::{BufRead, BufReader},
     str::FromStr,
 };
-use std::sync::{Arc};
-use std::thread::{self, JoinHandle};
-use std::sync::Mutex;
-
 
 // A basic wrapping u8 calculator.=
 //
@@ -84,9 +83,9 @@ pub fn main() {
     // We maintain a *global* calculator for the entire program.
     let calculator = Calculator::default();
     let lock = Arc::new(Mutex::new(calculator)); //Arc::new(RwLock::new(calculator));
-    
+
     // usar mutex , nos permite escribir un ARC .ya que un arc de un mutex se puede escribrir
-    
+
     for input in inputs {
         // Open the input file.
         //println!("Nombre del archivo = {}", input);
@@ -99,7 +98,7 @@ pub fn main() {
         //EN teoría no debo usar clone
         //EN teoría no debo usar clone
         let calc_clone = Arc::clone(&lock); //EN teoría no debo usar esto
-        //EN teoría no debo usar clone 
+        //EN teoría no debo usar clone
         //EN teoría no debo usar clone
         //EN teoría no debo usar esto
         //EN teoría no debo usar esto
@@ -127,32 +126,31 @@ pub fn main() {
 }
 
 fn funcion_auxiliar(file: File, calculadora: Arc<Mutex<Calculator>>) {
-            //let  lock_calculadora = lock.clone();
-            let file_reader = BufReader::new(file);
-    
+    //let  lock_calculadora = lock.clone();
+    let file_reader = BufReader::new(file);
 
-            // A buffered reader also implements useful methods, like `lines()`
-            for line in file_reader.lines() {
-                // The underlying reader (file) may fail. In that case, we print the
-                // error and skip the current file.
-                let line = match line {
-                    Ok(line) => line,
-                    Err(error) => {
-                        eprintln!("failed to read line {}", error);
-                        break;
-                    }
-                };
-
-                // The operation may be invalid. In that case, we print the error
-                // and skip the current *line*.
-                let operation = match Operation::from_str(&line) {
-                    Ok(operation) => operation,
-                    Err(error) => {
-                        eprintln!("failed to parse line {}", error);
-                        continue;
-                    }
-                };
-                let mut calculadora = calculadora.lock().unwrap();
-                calculadora.apply(operation);
+    // A buffered reader also implements useful methods, like `lines()`
+    for line in file_reader.lines() {
+        // The underlying reader (file) may fail. In that case, we print the
+        // error and skip the current file.
+        let line = match line {
+            Ok(line) => line,
+            Err(error) => {
+                eprintln!("failed to read line {}", error);
+                break;
             }
-        }
+        };
+
+        // The operation may be invalid. In that case, we print the error
+        // and skip the current *line*.
+        let operation = match Operation::from_str(&line) {
+            Ok(operation) => operation,
+            Err(error) => {
+                eprintln!("failed to parse line {}", error);
+                continue;
+            }
+        };
+        let mut calculadora = calculadora.lock().unwrap();
+        calculadora.apply(operation);
+    }
+}

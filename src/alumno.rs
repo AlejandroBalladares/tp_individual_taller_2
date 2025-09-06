@@ -3,7 +3,7 @@ use std::io::{Read, Write};
 #[derive(Debug)]
 pub struct Alumno {
     pub nombre: String,
-    pub padron: u32
+    pub padron: u32,
 }
 
 impl Alumno {
@@ -34,7 +34,7 @@ impl Alumno {
         // Convierto de bytes a string.
         let nombre_str = std::str::from_utf8(&nombre_buf).expect("Error al leer nombre");
         let nombre = nombre_str.to_owned();
-        let alumno = Alumno{nombre, padron};
+        let alumno = Alumno { nombre, padron };
         Ok(alumno)
     }
 }

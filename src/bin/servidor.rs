@@ -1,20 +1,14 @@
 //! Abre un puerto TCP en el puerto asignado por argv.
 //! Escribe las lineas recibidas a stdout y las manda mediante el socket.
-use tp_individual_2::alumno;
-use alumno::Alumno;
+
 use std::env::args;
-use std::net::{TcpListener, TcpStream};
+use std::net::TcpListener;
 
-use std::{
-    fs::File,
-    io::{BufRead, BufReader, Read},
-    str::FromStr,
-};
-use std::sync::{Arc};
-use std::thread::{self, JoinHandle};
-use std::sync::Mutex;
+use std::{io::Read, str::FromStr};
 
-
+//use std::sync::{Arc};
+//use std::thread::{self, JoinHandle};
+//use std::sync::Mutex;
 
 static SERVER_ARGS: usize = 2;
 
@@ -26,16 +20,22 @@ fn main() -> Result<(), ()> {
         println!("{:?} <host> <puerto>", app_name);
         return Err(());
     }
-    
+
     let address = "0.0.0.0:".to_owned() + &argv[1];
 
-    let calculator = Calculator::default();
-    let lock = Arc::new(Mutex::new(calculator)); //Arc::new(RwLock::new(calculator));
-    
-
-
+    //let calculator = Calculator::default();
+    //let lock = Arc::new(Mutex::new(calculator)); //Arc::new(RwLock::new(calculator));
 
     server_run(&address).unwrap();
+    Ok(())
+}
+
+fn server_run(address: &str) -> std::io::Result<()> {
+    let listener = TcpListener::bind(address)?;
+    // accept devuelve una tupla (TcpStream, std::net::SocketAddr)
+    for client_stream in listener.incoming() {
+        lee_operacion(&mut client_stream.unwrap())?;
+    }
     Ok(())
 }
 
@@ -49,23 +49,8 @@ fn main() -> Result<(), ()> {
 //     Ok(())
 // }
 
-fn handle_client(stream: &mut dyn Read) -> std::io::Result<()> {
-    let alumno = Alumno::read_from(stream);
-    println!("Recibió {:?}", alumno);
-    Ok(())
-}
-
-fn server_run(address: &str) -> std::io::Result<()> {
-    let listener = TcpListener::bind(address)?;
-    // accept devuelve una tupla (TcpStream, std::net::SocketAddr)
-    for client_stream in listener.incoming() {
-        lee_operacion(&mut client_stream.unwrap())?;
-    }
-    Ok(())
-}
-
- pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
-    loop{
+pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
+    loop {
         let mut num_buffer = [0u8; 4];
 
         stream.read_exact(&mut num_buffer)?;
@@ -78,12 +63,11 @@ fn server_run(address: &str) -> std::io::Result<()> {
         let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
         let mensaje = mensaje_str.to_owned();
         println!("el mensaje recibido fue {}", mensaje);
-        if mensaje == "Fin del archivo"{
+        if mensaje == "Fin del archivo" {
             break;
         }
     }
     Ok(())
-          
 }
 
 // A basic wrapping u8 calculator.=
@@ -166,9 +150,9 @@ pub fn main() {
     // We maintain a *global* calculator for the entire program.
     let calculator = Calculator::default();
     let lock = Arc::new(Mutex::new(calculator)); //Arc::new(RwLock::new(calculator));
-    
+
     // usar mutex , nos permite escribir un ARC .ya que un arc de un mutex se puede escribrir
-    
+
     for input in inputs {
         // Open the input file.
         //println!("Nombre del archivo = {}", input);
@@ -181,7 +165,7 @@ pub fn main() {
         //EN teoría no debo usar clone
         //EN teoría no debo usar clone
         let calc_clone = Arc::clone(&lock); //EN teoría no debo usar esto
-        //EN teoría no debo usar clone 
+        //EN teoría no debo usar clone
         //EN teoría no debo usar clone
         //EN teoría no debo usar esto
         //EN teoría no debo usar esto
@@ -211,7 +195,7 @@ pub fn main() {
 fn funcion_auxiliar(file: File, calculadora: Arc<Mutex<Calculator>>) {
             //let  lock_calculadora = lock.clone();
             let file_reader = BufReader::new(file);
-    
+
 
             // A buffered reader also implements useful methods, like `lines()`
             for line in file_reader.lines() {
@@ -237,7 +221,7 @@ fn funcion_auxiliar(file: File, calculadora: Arc<Mutex<Calculator>>) {
                 let mut calculadora = calculadora.lock().unwrap();
                 calculadora.apply(operation);
             }
-        } 
-        */ 
-        
+        }
+        */
+
 */
