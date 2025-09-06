@@ -38,6 +38,8 @@ fn server_run(address: &str) -> std::io::Result<()> {
         //Acá debería agregar los hilos?
         leer_operacion(&mut client_stream.unwrap(), &mut calculadora)?;
         println!("El valor final es {}", calculadora.value);
+        //Enviar el resultado al cliente
+        //client_stream.write(calculadora.value);
     }
     Ok(())
 }
@@ -98,6 +100,7 @@ pub enum Operation {
     Sub(u8),
     Mul(u8),
     Div(u8),
+    Get(),
 }
 
 impl FromStr for Operation {
@@ -106,6 +109,8 @@ impl FromStr for Operation {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         // Split the string into tokens separated by whitespace.
         let tokens: Vec<&str> = s.split_whitespace().collect();
+
+        //Agregar un caso para el GET
 
         // Try to convert the vector into a statically-sized array of 2 elements, failing otherwise.
         let [operation, operand] = tokens.try_into().map_err(|_| "expected 2 arguments")?;
@@ -118,6 +123,7 @@ impl FromStr for Operation {
             "-" => Ok(Operation::Sub(operand)),
             "*" => Ok(Operation::Mul(operand)),
             "/" => Ok(Operation::Div(operand)),
+            "GET" => Ok(Operation::Get()),
             _ => Err("unknown operation"),
         }
     }
@@ -134,6 +140,7 @@ impl Calculator {
             Operation::Sub(operand) => self.value = self.value.wrapping_sub(operand),
             Operation::Mul(operand) => self.value = self.value.wrapping_mul(operand),
             Operation::Div(operand) => self.value = self.value.wrapping_div(operand),
+            Operation::Get() => () = println!("{}", self.value),
         }
     }
 }

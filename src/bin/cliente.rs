@@ -23,6 +23,8 @@ fn main() -> Result<(), ()> {
             //return Ok(());
         }
     }
+    //Recibir el resultado del servidor
+    //Imprimir el resultado
     Ok(())
 }
 
