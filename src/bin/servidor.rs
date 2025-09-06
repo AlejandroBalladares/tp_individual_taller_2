@@ -65,6 +65,7 @@ fn server_run(address: &str) -> std::io::Result<()> {
 }
 
  pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
+    loop{
         let mut num_buffer = [0u8; 4];
 
         stream.read_exact(&mut num_buffer)?;
@@ -77,8 +78,13 @@ fn server_run(address: &str) -> std::io::Result<()> {
         let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
         let mensaje = mensaje_str.to_owned();
         println!("el mensaje recibido fue {}", mensaje);
-        Ok(())
+        if mensaje == "Fin del archivo"{
+            break;
+        }
     }
+    Ok(())
+          
+}
 
 // A basic wrapping u8 calculator.=
 //

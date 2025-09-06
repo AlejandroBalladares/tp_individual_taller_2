@@ -5,8 +5,11 @@ use alumno::Alumno;
 use std::env::args;
 use std::net::TcpStream;
 use std::io::{Read, Write};
+use std::io::{self, BufRead, BufReader};
+use std::fs::File;
+use std::io::prelude::*;
 
-static CLIENT_ARGS: usize = 3;
+static CLIENT_ARGS: usize = 4;
 
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
@@ -17,22 +20,58 @@ fn main() -> Result<(), ()> {
         return Err(());
     }
 
+    //NO SE PUEDE USAR CLONE
     let address = argv[1].clone() + ":" + &argv[2];
+    let nombre_archivo = &argv[3];
     println!("Conectándome a {:?}", address);
 
-    client_runn(&address).unwrap();
+    /* // Para el método read_to_string en el objeto File
+use std::io;
+
+fn main() -> io::Result<()> {
+   
+    archivo.read_to_string(&mut contenido)?; // Lee todo el contenido en la String 'contenido'
+    println!("Contenido: {}", contenido);
+    Ok(())
+
+    let reader = BufReader::new(file);
+
+    // 3. Leer línea por línea
+    for line in reader.lines() {
+        // Cada `line` es un Result<String> que puede ser un error o la línea actual
+        println!("{}", line?);
+    }
+
+} */
+
+    client_runn(&address, nombre_archivo).unwrap();
     Ok(())
 }
 
-fn client_runn(address: &str)-> std::io::Result<()>{
+fn client_runn(address: &str, nombre_archivo: &String)-> std::io::Result<()>{
+    let mut archivo = File::open(nombre_archivo)?; // Abre el archivo en modo solo lectura
+    let reader = BufReader::new(archivo);
+
     let mut socket = TcpStream::connect(address)?;
-    let mensaje = "Hola servidor";
-    println!("Enviando: {:?}", mensaje);
+    //let mensaje = "Hola servidor";
 
-    let size_be = (mensaje.len() as u32).to_be_bytes();
+    for linea in reader.lines() {
+        // Cada `line` es un Result<String> que puede ser un error o la línea actual
+        
+        let mensaje = linea?;
+        println!("Enviando: {:?}", mensaje);
+        let size_be = (mensaje.len() as u32).to_be_bytes();
+        socket.write(&size_be)?;
+        socket.write(mensaje.as_bytes())?;
+
+    }
+    let fin = "Fin del archivo";
+    let size_be = (fin.len() as u32).to_be_bytes();
     socket.write(&size_be)?;
-    socket.write(mensaje.as_bytes())?;
+    socket.write(fin.as_bytes())?;
 
+
+    
     Ok(())
 }
 
