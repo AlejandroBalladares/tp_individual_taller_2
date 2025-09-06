@@ -1,6 +1,3 @@
-//! Abre un puerto TCP en el puerto asignado por argv.
-//! Escribe las lineas recibidas a stdout y las manda mediante el socket.
-
 use std::env::args;
 use std::net::TcpListener;
 
@@ -21,7 +18,12 @@ fn main() -> Result<(), ()> {
         return Err(());
     }
     let address = "0.0.0.0:".to_owned() + &argv[1];
-    server_run(&address).unwrap();
+    match server_run(&address) {
+        Ok(_) => {}
+        Err(error) => {
+            eprint!("Error: {}", error);
+        }
+    }
     Ok(())
 }
 
@@ -33,6 +35,7 @@ fn server_run(address: &str) -> std::io::Result<()> {
     let listener = TcpListener::bind(address)?;
     // accept devuelve una tupla (TcpStream, std::net::SocketAddr)
     for client_stream in listener.incoming() {
+        //Acá debería agregar los hilos?
         leer_operacion(&mut client_stream.unwrap(), &mut calculadora)?;
         println!("El valor final es {}", calculadora.value);
     }
@@ -52,17 +55,19 @@ fn server_run(address: &str) -> std::io::Result<()> {
 pub fn leer_operacion(stream: &mut dyn Read, calculadora: &mut Calculator) -> std::io::Result<()> {
     loop {
         let mut num_buffer = [0u8; 4];
-
         stream.read_exact(&mut num_buffer)?;
+
         // Una vez que leemos los bytes, los convertimos a un u32
         let size = u32::from_be_bytes(num_buffer);
+
         // Creamos un buffer para el nombre
         let mut mensaje_buf = vec![0; size as usize];
         stream.read_exact(&mut mensaje_buf)?;
+
         // Convierto de bytes a string.
         let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
         let mensaje = mensaje_str.to_owned();
-        println!("el mensaje recibido fue {}", mensaje);
+        //println!("el mensaje recibido fue {}", mensaje);
         if mensaje == "Fin del archivo" {
             break;
         }
@@ -88,7 +93,7 @@ pub struct Calculator {
 }
 
 #[derive(PartialEq, Eq, Debug)]
-enum Operation {
+pub enum Operation {
     Add(u8),
     Sub(u8),
     Mul(u8),
