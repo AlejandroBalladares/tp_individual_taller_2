@@ -20,21 +20,21 @@ fn main() -> Result<(), ()> {
         println!("{:?} <host> <puerto>", app_name);
         return Err(());
     }
-
     let address = "0.0.0.0:".to_owned() + &argv[1];
-
-    //let calculator = Calculator::default();
-    //let lock = Arc::new(Mutex::new(calculator)); //Arc::new(RwLock::new(calculator));
-
     server_run(&address).unwrap();
     Ok(())
 }
 
 fn server_run(address: &str) -> std::io::Result<()> {
+    //let resultado = 0;
+    let mut calculadora = Calculator::default();
+    //let lock = Arc::new(Mutex::new(calculator)); //Arc::new(RwLock::new(calculator));
+
     let listener = TcpListener::bind(address)?;
     // accept devuelve una tupla (TcpStream, std::net::SocketAddr)
     for client_stream in listener.incoming() {
-        lee_operacion(&mut client_stream.unwrap())?;
+        leer_operacion(&mut client_stream.unwrap(), &mut calculadora)?;
+        println!("El valor final es {}", calculadora.value);
     }
     Ok(())
 }
@@ -49,7 +49,7 @@ fn server_run(address: &str) -> std::io::Result<()> {
 //     Ok(())
 // }
 
-pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
+pub fn leer_operacion(stream: &mut dyn Read, calculadora: &mut Calculator) -> std::io::Result<()> {
     loop {
         let mut num_buffer = [0u8; 4];
 
@@ -66,6 +66,15 @@ pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
         if mensaje == "Fin del archivo" {
             break;
         }
+        let operation = match Operation::from_str(&mensaje) {
+            Ok(operation) => operation,
+            Err(error) => {
+                eprintln!("failed to parse line {}", error);
+                continue;
+            }
+        };
+        //let mut calculadora = calculadora.lock().unwrap();
+        calculadora.apply(operation);
     }
     Ok(())
 }
@@ -74,7 +83,7 @@ pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
 //
 // The possible values range from [0;256).
 #[derive(Default)]
-struct Calculator {
+pub struct Calculator {
     value: u8,
 }
 
