@@ -59,11 +59,26 @@ fn server_run(address: &str) -> std::io::Result<()> {
     let listener = TcpListener::bind(address)?;
     // accept devuelve una tupla (TcpStream, std::net::SocketAddr)
     for client_stream in listener.incoming() {
-        handle_client(&mut client_stream.unwrap())?;
+        lee_operacion(&mut client_stream.unwrap())?;
     }
     Ok(())
 }
 
+ pub fn lee_operacion(stream: &mut dyn Read) -> std::io::Result<()> {
+        let mut num_buffer = [0u8; 4];
+
+        stream.read_exact(&mut num_buffer)?;
+        // Una vez que leemos los bytes, los convertimos a un u32
+        let size = u32::from_be_bytes(num_buffer);
+        // Creamos un buffer para el nombre
+        let mut mensaje_buf = vec![0; size as usize];
+        stream.read_exact(&mut mensaje_buf)?;
+        // Convierto de bytes a string.
+        let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
+        let mensaje = mensaje_str.to_owned();
+        println!("el mensaje recibido fue {}", mensaje);
+        Ok(())
+    }
 
 // A basic wrapping u8 calculator.=
 //
