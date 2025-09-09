@@ -1,7 +1,9 @@
 use std::env::args;
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
-use std::{io::Read, net::TcpListener, str::FromStr};
+use std::io::{Read, Write};
+use std::net::{TcpStream, TcpListener};
+use std::str::FromStr;
 static SERVER_ARGS: usize = 2;
 
 fn main() -> Result<(), ()> {
@@ -36,10 +38,11 @@ fn server_run(address: &str) -> std::io::Result<()> {
             Ok(mutex) => mutex.value(),
             Err(e) => {
                 eprint!("Error: {}", e);
-                return Ok(()); //REVISAR!!!!!!!!!!!!!!!!!!!!!!!
+                return Ok(()); 
             }
         };
-        println!("{}", valor)
+        println!("{}", valor);
+        //stream.write(&valor.to_be_bytes());
         //Enviar el resultado al cliente
         //client_stream.write(calculadora.value);
     }
@@ -48,7 +51,20 @@ fn server_run(address: &str) -> std::io::Result<()> {
     }
     Ok(())
 }
+//&mut dyn std::io::Read + std::io::Write
+//&mut dyn std::io::Read and std::io::Write
+//<T: Display + Debug>
+/*
+pub fn obtener_datos<R, W>(reader: R, mut writer: W) -> Result<(f64, i32), Error>
+where
+    R: BufRead,
+    W: Write,
+{ */
+//<stream: &mut dyn std::io::Read + std::io::Write>
+//pub fn leer_operacion<Stream: Read + Write>(stream: &mut dyn std::io::Read, calculadora: Arc<Mutex<Calculator>>) {
 
+/*fn handle_connection(mut stream: TcpStream) {
+    let buf_reader = BufReader::new(&stream); */
 pub fn leer_operacion(stream: &mut dyn Read, calculadora: Arc<Mutex<Calculator>>) {
     loop {
         let mut num_buffer = [0u8; 4];
@@ -94,6 +110,7 @@ pub fn leer_operacion(stream: &mut dyn Read, calculadora: Arc<Mutex<Calculator>>
         };
         calculadora.apply(operation);
     }
+    
 }
 
 // A basic wrapping u8 calculator.=
