@@ -4,6 +4,8 @@ use std::net::{TcpListener, TcpStream};
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
+use std::io::Error;
+
 static SERVER_ARGS: usize = 2;
 
 fn main() -> Result<(), ()> {
@@ -24,40 +26,23 @@ fn main() -> Result<(), ()> {
     Ok(())
 }
 
-fn server_run(address: &str) -> std::io::Result<()> {
+fn server_run(address: &str) -> Result<(), Error> {
     let calculadora = Calculator::default();
     let mut handles: Vec<JoinHandle<()>> = vec![];
     let lock = Arc::new(Mutex::new(calculadora));
     let listener = TcpListener::bind(address)?;
     for client_stream in listener.incoming() {
-        let calc_clone = Arc::clone(&lock); //EN teoría no debo usar esto 
-        let mut cliente = client_stream?;
-        let handle = thread::spawn(move || leer_operacion(cliente, calc_clone));
+        let calculadora_mutex = Arc::clone(&lock);
+        let cliente = client_stream?;
+        let handle = thread::spawn(move || leer_operacion(cliente, calculadora_mutex));
         handles.push(handle);
-
-        //stream.write(&valor.to_be_bytes());
-        //Enviar el resultado al cliente
-        //client_stream.write(calculadora.value);
     }
     for handle in handles {
         handle.join().unwrap()
     }
     Ok(())
 }
-//&mut dyn std::io::Read + std::io::Write
-//&mut dyn std::io::Read and std::io::Write
-//<T: Display + Debug>
-/*
-pub fn obtener_datos<R, W>(reader: R, mut writer: W) -> Result<(f64, i32), Error>
-where
-    R: BufRead,
-    W: Write,
-{ */
-//<stream: &mut dyn std::io::Read + std::io::Write>
-//pub fn leer_operacion<Stream: Read + Write>(stream: &mut dyn std::io::Read, calculadora: Arc<Mutex<Calculator>>) {
 
-/*fn handle_connection(mut stream: TcpStream) {
-let buf_reader = BufReader::new(&stream); */
 pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     loop {
         let mut num_buffer = [0u8; 4];
@@ -111,7 +96,6 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         }
     };
     println!("{}", valor);
-    
     let _ = stream.write(&valor.to_be_bytes());
 
 }

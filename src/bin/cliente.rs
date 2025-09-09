@@ -25,9 +25,6 @@ fn main() -> Result<(), ()> {
             //return Ok(());
         }
     }
-    //Recibir el resultado del servidor
-    //Imprimir el resultado
-    
     Ok(())
 }
 
@@ -50,7 +47,7 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
 
     let mut num_buffer = [0u8; 4];
     socket.read(&mut num_buffer)?;
-    // Una vez que leemos los bytes, los convertimos a un u32
+    
     let resultado = u32::from_be_bytes(num_buffer);
     println!("{}",resultado);
 
