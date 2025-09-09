@@ -1,7 +1,9 @@
 use std::env::args;
 use std::fs::File;
-use std::io::{BufRead, BufReader, Write};
+use std::io::{BufRead, BufReader, Write, Read};
 use std::net::TcpStream;
+use std::io::Error;
+
 static CLIENT_ARGS: usize = 4;
 
 fn main() -> Result<(), ()> {
@@ -25,10 +27,11 @@ fn main() -> Result<(), ()> {
     }
     //Recibir el resultado del servidor
     //Imprimir el resultado
+    
     Ok(())
 }
 
-fn client_run(address: &str, nombre_archivo: &String) -> std::io::Result<()> {
+fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     let archivo = File::open(nombre_archivo)?;
     let reader = BufReader::new(archivo);
     let mut socket = TcpStream::connect(address)?;
@@ -44,6 +47,12 @@ fn client_run(address: &str, nombre_archivo: &String) -> std::io::Result<()> {
     let size_be = (fin.len() as u32).to_be_bytes();
     let _ = socket.write(&size_be)?;
     let _ = socket.write(fin.as_bytes())?;
+
+    let mut num_buffer = [0u8; 4];
+    socket.read(&mut num_buffer)?;
+    // Una vez que leemos los bytes, los convertimos a un u32
+    let resultado = u32::from_be_bytes(num_buffer);
+    println!("{}",resultado);
 
     Ok(())
 }

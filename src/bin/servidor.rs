@@ -1,9 +1,9 @@
 use std::env::args;
+use std::io::{Read, Write};
+use std::net::{TcpListener, TcpStream};
+use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
-use std::io::{Read, Write};
-use std::net::{TcpStream, TcpListener};
-use std::str::FromStr;
 static SERVER_ARGS: usize = 2;
 
 fn main() -> Result<(), ()> {
@@ -32,22 +32,15 @@ fn server_run(address: &str) -> std::io::Result<()> {
     for client_stream in listener.incoming() {
         let calc_clone = Arc::clone(&lock); //EN teoría no debo usar esto 
         let mut cliente = client_stream?;
-        let handle = thread::spawn(move || leer_operacion(&mut cliente, calc_clone));
+        let handle = thread::spawn(move || leer_operacion(cliente, calc_clone));
         handles.push(handle);
-        let valor = match lock.lock() {
-            Ok(mutex) => mutex.value(),
-            Err(e) => {
-                eprint!("Error: {}", e);
-                return Ok(()); 
-            }
-        };
-        println!("{}", valor);
+
         //stream.write(&valor.to_be_bytes());
         //Enviar el resultado al cliente
         //client_stream.write(calculadora.value);
     }
     for handle in handles {
-     handle.join().unwrap()
+        handle.join().unwrap()
     }
     Ok(())
 }
@@ -64,8 +57,8 @@ where
 //pub fn leer_operacion<Stream: Read + Write>(stream: &mut dyn std::io::Read, calculadora: Arc<Mutex<Calculator>>) {
 
 /*fn handle_connection(mut stream: TcpStream) {
-    let buf_reader = BufReader::new(&stream); */
-pub fn leer_operacion(stream: &mut dyn Read, calculadora: Arc<Mutex<Calculator>>) {
+let buf_reader = BufReader::new(&stream); */
+pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     loop {
         let mut num_buffer = [0u8; 4];
         match stream.read_exact(&mut num_buffer) {
@@ -110,7 +103,17 @@ pub fn leer_operacion(stream: &mut dyn Read, calculadora: Arc<Mutex<Calculator>>
         };
         calculadora.apply(operation);
     }
+    let valor = match calculadora.lock() {
+        Ok(mutex) => mutex.value() as u32,
+        Err(e) => {
+            eprint!("Error: {}", e);
+            return;
+        }
+    };
+    println!("{}", valor);
     
+    let _ = stream.write(&valor.to_be_bytes());
+
 }
 
 // A basic wrapping u8 calculator.=
