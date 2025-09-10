@@ -1,6 +1,6 @@
 use std::env::args;
 use std::io::Error;
-use std::io::{Read, Write};
+use std::io::{Write};
 use std::net::{TcpListener, TcpStream};
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
@@ -59,7 +59,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         }
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
-            Err(error) => {
+            Err(_error) => {
                 //let _ = enviar(error, &mut stream);
                 continue;
             }

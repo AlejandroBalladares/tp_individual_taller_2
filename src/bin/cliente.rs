@@ -1,12 +1,11 @@
 use std::env::args;
 use std::fs::File;
 use std::io::Error;
-use std::io::{BufRead, BufReader, Read, Write};
+use std::io::{BufRead, BufReader, Read};
 use std::net::TcpStream;
 use tp_individual_2::io::*;
-
 static CLIENT_ARGS: usize = 4;
-//static GET: String = "GET";
+
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != CLIENT_ARGS {
@@ -37,21 +36,15 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion;
-        println!("Enviando: {:?}", mensaje);
-        let size_be = (mensaje.len() as u32).to_be_bytes();
-        let _ = socket.write(&size_be)?;
-        let _ = socket.write(mensaje.as_bytes())?;
-
+        //println!("El mensaje es {}", mensaje);
+        enviar_operacion(mensaje, &mut socket)?;
 
         //Leo si la operación salió bien o dio error
         //let respuesta = leer(&mut socket)?;
         //println!("{}",respuesta);
     }
-    let fin = "GET";
-    let size_be = (fin.len() as u32).to_be_bytes();
-    let _ = socket.write(&size_be)?;
-    let _ = socket.write(fin.as_bytes())?;
-
+    let fin = "GET".to_string();
+    enviar_operacion(fin, &mut socket)?;
     let mut num_buffer = [0u8; 4];
     socket.read(&mut num_buffer)?;
 
