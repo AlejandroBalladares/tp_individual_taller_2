@@ -65,13 +65,15 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
                 break;
             }
         }
+        
         // Convierto de bytes a string.
         let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
         let mensaje = mensaje_str.to_owned();
         //println!("el mensaje recibido fue {}", mensaje);
-        if mensaje == "Fin del archivo" {
+        if mensaje == "GET" {
             break;
         }
+        //println!("el mensaje es {:?}", mensaje);
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
@@ -114,7 +116,6 @@ pub enum Operation {
     Sub(u8),
     Mul(u8),
     Div(u8),
-    Get(),
 }
 
 impl FromStr for Operation {
@@ -124,10 +125,8 @@ impl FromStr for Operation {
         // Split the string into tokens separated by whitespace.
         let tokens: Vec<&str> = s.split_whitespace().collect();
 
-        //Agregar un caso para el GET
-
         // Try to convert the vector into a statically-sized array of 2 elements, failing otherwise.
-        let [operation, operand] = tokens.try_into().map_err(|_| "expected 2 arguments")?;
+        let [_codigo, operation, operand] = tokens.try_into().map_err(|_| "expected 3 arguments")?;
 
         // Parse the operand into an u8.
         let operand: u8 = operand.parse().map_err(|_| "operand is not an u8")?;
@@ -137,7 +136,6 @@ impl FromStr for Operation {
             "-" => Ok(Operation::Sub(operand)),
             "*" => Ok(Operation::Mul(operand)),
             "/" => Ok(Operation::Div(operand)),
-            "GET" => Ok(Operation::Get()),
             _ => Err("unknown operation"),
         }
     }
@@ -154,7 +152,6 @@ impl Calculator {
             Operation::Sub(operand) => self.value = self.value.wrapping_sub(operand),
             Operation::Mul(operand) => self.value = self.value.wrapping_mul(operand),
             Operation::Div(operand) => self.value = self.value.wrapping_div(operand),
-            Operation::Get() => () = println!("{}", self.value),
         }
     }
 }

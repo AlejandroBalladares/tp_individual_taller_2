@@ -5,7 +5,7 @@ use std::net::TcpStream;
 use std::io::Error;
 
 static CLIENT_ARGS: usize = 4;
-
+//static GET: String = "GET";
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != CLIENT_ARGS {
@@ -34,13 +34,14 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     let mut socket = TcpStream::connect(address)?;
 
     for linea in reader.lines() {
-        let mensaje = linea?;
+        let operacion = linea?;
+        let mensaje = "OP".to_owned()+ " " + &operacion;
         println!("Enviando: {:?}", mensaje);
         let size_be = (mensaje.len() as u32).to_be_bytes();
         let _ = socket.write(&size_be)?;
         let _ = socket.write(mensaje.as_bytes())?;
     }
-    let fin = "Fin del archivo";
+    let fin = "GET";
     let size_be = (fin.len() as u32).to_be_bytes();
     let _ = socket.write(&size_be)?;
     let _ = socket.write(fin.as_bytes())?;
