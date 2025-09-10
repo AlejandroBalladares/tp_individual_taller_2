@@ -11,16 +11,16 @@ static SERVER_ARGS: usize = 2;
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != SERVER_ARGS {
-        println!("Cantidad de argumentos inválido");
+        eprintln!("Error: \"Cantidad de argumentos inválido\"");
         let app_name = &argv[0];
         println!("{:?} <host> <puerto>", app_name);
-        return Err(());
+        return Ok(());
     }
     let address = "0.0.0.0:".to_owned() + &argv[1];
     match server_run(&address) {
         Ok(_) => {}
         Err(error) => {
-            eprint!("Error: {}", error);
+            eprint!("Error: \"{}\"", error);
         }
     }
     Ok(())
@@ -49,7 +49,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         match stream.read_exact(&mut num_buffer) {
             Ok(line) => line,
             Err(error) => {
-                eprintln!("failed to read line {}", error);
+                eprintln!("Error: \"{}\"", error);
                 break;
             }
         }
@@ -61,7 +61,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         match stream.read_exact(&mut mensaje_buf) {
             Ok(line) => line,
             Err(error) => {
-                eprintln!("failed to read line {}", error);
+                eprintln!("Error: \"{}\"", error);
                 break;
             }
         }
@@ -77,14 +77,14 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                eprintln!("failed to parse line {}", error);
+                eprintln!("Error: \"{}\"", error);
                 continue;
             }
         };
         let mut calculadora = match calculadora.lock() {
             Ok(calculadora) => calculadora,
             Err(e) => {
-                print!("Error: {}", e);
+                print!("Error: \"{}\"", e);
                 return;
             }
         };
@@ -93,7 +93,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(e) => {
-            eprint!("Error: {}", e);
+            eprint!("Error: \"{}\"", e);
             return;
         }
     };
@@ -126,17 +126,17 @@ impl FromStr for Operation {
         let tokens: Vec<&str> = s.split_whitespace().collect();
 
         // Try to convert the vector into a statically-sized array of 2 elements, failing otherwise.
-        let [_codigo, operation, operand] = tokens.try_into().map_err(|_| "expected 3 arguments")?;
+        let [_codigo, operation, operand] = tokens.try_into().map_err(|_| "Operación invalida")?;
 
         // Parse the operand into an u8.
-        let operand: u8 = operand.parse().map_err(|_| "operand is not an u8")?;
+        let operand: u8 = operand.parse().map_err(|_| "Operación invalida")?;
 
         match operation {
             "+" => Ok(Operation::Add(operand)),
             "-" => Ok(Operation::Sub(operand)),
             "*" => Ok(Operation::Mul(operand)),
             "/" => Ok(Operation::Div(operand)),
-            _ => Err("unknown operation"),
+            _ => Err("Operación invalida"),
         }
     }
 }

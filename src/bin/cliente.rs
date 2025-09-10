@@ -9,10 +9,10 @@ static CLIENT_ARGS: usize = 4;
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != CLIENT_ARGS {
-        println!("Cantidad de argumentos inválido");
+        eprintln!("Error: \"Cantidad de argumentos inválido\"");
         let app_name = &argv[0];
         println!("{:?} <host> <puerto>", app_name);
-        return Err(());
+        return Ok(());
     }
     let ip = argv[1].to_owned();
     let address = ip + ":" + &argv[2];
@@ -21,7 +21,7 @@ fn main() -> Result<(), ()> {
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
         Err(error) => {
-            eprint!("Error: {}", error);
+            eprint!("Error: \"{}\"", error);
             //return Ok(());
         }
     }
