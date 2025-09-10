@@ -1,11 +1,13 @@
 use std::env::args;
+use std::io::Error;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
-use std::io::Error;
 use tp_individual_2::calculadora::*;
+use tp_individual_2::io::*;
+
 
 static SERVER_ARGS: usize = 2;
 
@@ -46,43 +48,26 @@ fn server_run(address: &str) -> Result<(), Error> {
 
 pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     loop {
-        let mut num_buffer = [0u8; 4];
-        match stream.read_exact(&mut num_buffer) {
-            Ok(line) => line,
-            Err(error) => {
-                eprintln!("Error: \"{}\"", error);
-                break;
+        let mensaje = match leer(&mut stream){
+            Ok(mensaje) =>{mensaje}
+            Err(_e) =>{
+                continue;
             }
-        }
-        // Una vez que leemos los bytes, los convertimos a un u32
-        let size = u32::from_be_bytes(num_buffer);
-
-        // Creamos un buffer para el nombre
-        let mut mensaje_buf = vec![0; size as usize];
-        match stream.read_exact(&mut mensaje_buf) {
-            Ok(line) => line,
-            Err(error) => {
-                eprintln!("Error: \"{}\"", error);
-                break;
-            }
-        }
-        // Convierto de bytes a string.
-        let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
-        let mensaje = mensaje_str.to_owned();
+        };
         if mensaje == "GET" {
             break;
         }
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                eprintln!("Error: \"{}\"", error);
+                //let _ = enviar(error, &mut stream);
                 continue;
             }
         };
         let mut calculadora = match calculadora.lock() {
             Ok(calculadora) => calculadora,
             Err(e) => {
-                print!("Error: \"{}\"", e);
+                print!("Error: \"{}\"", e); //corregir
                 continue; //cual de las 2 irá?
                 //return;
             }
@@ -98,5 +83,5 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
     };
     println!("{}", valor);
     let _ = stream.write(&valor.to_be_bytes());
-
 }
+
