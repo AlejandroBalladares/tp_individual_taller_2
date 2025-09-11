@@ -50,7 +50,8 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
     loop {
         let mensaje = match leer(&mut stream){
             Ok(mensaje) =>{mensaje}
-            Err(_e) =>{
+            Err(error) =>{
+                let _ = enviar_mensaje(error.to_string(), &mut stream);
                 continue;
             }
         };
@@ -59,25 +60,28 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         }
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
-            Err(_error) => {
-                //let _ = enviar(error, &mut stream);
+            Err(error) => {
+                let _ = enviar_mensaje(error.to_string(), &mut stream);
                 continue;
             }
         };
         let mut calculadora = match calculadora.lock() {
             Ok(calculadora) => calculadora,
-            Err(e) => {
-                print!("Error: \"{}\"", e); //corregir
+            Err(error) => {
+                let _ = enviar_mensaje(error.to_string(), &mut stream);
+                print!("Error: \"{}\"", error); //corregir
                 continue; //cual de las 2 irá?
                 //return;
             }
         };
         calculadora.apply(operation);
+        let _ = enviar_mensaje("OK".to_string(), &mut stream);
     }
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
-        Err(e) => {
-            eprint!("Error: \"{}\"", e);
+        Err(error) => {
+            let _ = enviar_mensaje(error.to_string(), &mut stream);
+            eprint!("Error: \"{}\"", error);
             return;
         }
     };

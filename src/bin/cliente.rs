@@ -36,15 +36,15 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion;
-        //println!("El mensaje es {}", mensaje);
-        enviar_operacion(mensaje, &mut socket)?;
+        println!("El mensaje es {}", mensaje);
+        enviar_mensaje(mensaje, &mut socket)?;
 
         //Leo si la operación salió bien o dio error
-        //let respuesta = leer(&mut socket)?;
-        //println!("{}",respuesta);
+        let respuesta = leer(&mut socket)?;
+        println!("{}",respuesta);
     }
     let fin = "GET".to_string();
-    enviar_operacion(fin, &mut socket)?;
+    enviar_mensaje(fin, &mut socket)?;
     let mut num_buffer = [0u8; 4];
     socket.read(&mut num_buffer)?;
 
