@@ -26,6 +26,7 @@ fn main() -> Result<(), ()> {
     Ok(())
 }
 
+///Recibe una dirección y un archivo, se conecta a la dirección y envia todas las lineas del archivo
 fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     let archivo = File::open(nombre_archivo)?;
     let reader = BufReader::new(archivo);
@@ -34,22 +35,14 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion;
-        println!("El mensaje es {}", mensaje);
+        //println!("El mensaje es {}", mensaje);
         enviar_mensaje(mensaje, &mut socket)?;
-
-        //Leo si la operación salió bien o dio error
-        let respuesta = leer(&mut socket)?;
-        println!("{}", respuesta);
+        let _respuesta = leer(&mut socket)?;
+        //println!("{}", _respuesta);
     }
     let fin = "GET".to_string();
     enviar_mensaje(fin, &mut socket)?;
-    let mensaje = match leer(&mut socket) {
-        Ok(mensaje) => mensaje,
-        Err(error) => {
-            eprint!("Error: \"{}\"", error);
-            return Ok(());
-        }
-    };
+    let mensaje = leer(&mut socket)?;
     print!("{}", mensaje);
     Ok(())
 }

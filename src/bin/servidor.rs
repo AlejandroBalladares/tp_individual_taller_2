@@ -26,6 +26,8 @@ fn main() -> Result<(), ()> {
     Ok(())
 }
 
+///Se conecta a una dirección para correr el servidor, recibe mensajes de varios clientes distintos
+/// y realiza las operaciones pertinentes
 fn server_run(address: &str) -> Result<(), Error> {
     let calculadora = Calculator::default();
     let mut handles: Vec<JoinHandle<()>> = vec![];
@@ -43,6 +45,7 @@ fn server_run(address: &str) -> Result<(), Error> {
     Ok(())
 }
 
+///Lee los mensajes recibidos y realiza el calculo pertinente
 pub fn leer_operacion(mut socket: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     loop {
         let mensaje = match leer(&mut socket) {
@@ -78,6 +81,7 @@ pub fn leer_operacion(mut socket: TcpStream, calculadora: Arc<Mutex<Calculator>>
     finalizar(socket, calculadora);
 }
 
+///Imprime el valor actual de la calculadora y lo envia al cliente que lo pidio
 fn finalizar(mut socket: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,

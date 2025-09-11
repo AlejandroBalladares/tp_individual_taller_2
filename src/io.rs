@@ -2,6 +2,7 @@ use std::io::Error;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
+///Recibe un mensaje y un socket, realiza las operaciones necesarias para poder enviar el mensaje
 pub fn enviar_mensaje(mensaje: String, socket: &mut TcpStream) -> Result<(), Error> {
     let size_be = (mensaje.len() as u32).to_be_bytes();
     let _ = socket.write(&size_be)?;
@@ -9,17 +10,65 @@ pub fn enviar_mensaje(mensaje: String, socket: &mut TcpStream) -> Result<(), Err
     Ok(())
 }
 
+///Recibe un socket, devuelve un Ok(string) con el mensaje leido
 pub fn leer(socket: &mut TcpStream) -> Result<String, Error> {
     let mut num_buffer = [0u8; 4];
     socket.read_exact(&mut num_buffer)?;
-    // Una vez que leemos los bytes, los convertimos a un u32
     let size = u32::from_be_bytes(num_buffer);
-
-    // Creamos un buffer para el nombre
     let mut mensaje_buf = vec![0; size as usize];
     socket.read_exact(&mut mensaje_buf)?;
-    // Convierto de bytes a string.
     let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
     let mensaje = mensaje_str.to_owned();
     Ok(mensaje)
 }
+
+
+
+
+
+
+
+/*
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::{self, Read, Write};
+
+// A mock object implementing Read and Write for testing purposes
+struct MockStream {
+    read_data: Vec<u8>,
+    write_data: Vec<u8>,
+}
+
+impl Read for MockStream {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        let bytes_to_read = self.read_data.len().min(buf.len());
+        buf[..bytes_to_read].copy_from_slice(&self.read_data[..bytes_to_read]);
+        self.read_data.drain(..bytes_to_read);
+        Ok(bytes_to_read)
+    }
+}
+
+impl Write for MockStream {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        self.write_data.extend_from_slice(buf);
+        Ok(buf.len())
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
+
+    #[test]
+    fn vector_con_los_datos_correctos_pasa() {
+        let mut mock_stream = MockStream {
+        read_data: b"hello".to_vec(),
+        write_data: Vec::new(),
+        };
+        let mensaje = "Hello world".to_string();
+        let valor = enviar_mensaje(mensaje,mock_stream);
+        assert!(valor.is_ok());
+    }
+} 
+*/
