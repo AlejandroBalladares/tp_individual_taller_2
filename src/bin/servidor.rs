@@ -43,14 +43,13 @@ fn server_run(address: &str) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
+pub fn leer_operacion(mut socket: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     loop {
-        let mensaje = match leer(&mut stream) {
+        let mensaje = match leer(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
                 println!("Mensaje de error: {}", mensaje_error);
-                //let _ = enviar_mensaje(mensaje_error, &mut stream);
                 return;
             }
         };
@@ -61,8 +60,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
             Ok(operation) => operation,
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
-                println!("Mensaje de error: {}", mensaje_error);
-                let _ = enviar_mensaje(mensaje_error, &mut stream);
+                let _ = enviar_mensaje(mensaje_error, &mut socket);
                 continue;
             }
         };
@@ -71,22 +69,25 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
                 println!("Mensaje de error: {}", mensaje_error);
-                let _ = enviar_mensaje(mensaje_error, &mut stream);
                 return;
             }
         };
         calculadora.apply(operation);
-        let _ = enviar_mensaje("OK".to_string(), &mut stream);
+        let _ = enviar_mensaje("OK".to_string(), &mut socket);
     }
+    finalizar(socket, calculadora);
+}
+
+fn finalizar(mut socket: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(error) => {
             let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
-            let _ = enviar_mensaje(mensaje_error, &mut stream);
+            let _ = enviar_mensaje(mensaje_error, &mut socket);
             return;
         }
     };
     println!("VALUE {}", valor);
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
-    let _ = enviar_mensaje(mensaje, &mut stream);
+    let _ = enviar_mensaje(mensaje, &mut socket);
 }
