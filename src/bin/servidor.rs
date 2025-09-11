@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
 use tp_individual_2::io::*;
-static SERVER_ARGS: usize = 2;
+static SERVER_ARGS: usize = 3;
 
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
@@ -16,7 +16,8 @@ fn main() -> Result<(), ()> {
         println!("{:?} <host> <puerto>", app_name);
         return Ok(());
     }
-    let address = "0.0.0.0:".to_owned() + &argv[1];
+    let ip = argv[1].to_owned();
+    let address = ip + ":" + &argv[2];
     match server_run(&address) {
         Ok(_) => {}
         Err(error) => {
@@ -49,8 +50,9 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
             Ok(mensaje) => mensaje,
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
-                let _ = enviar_mensaje(mensaje_error, &mut stream);
-                continue;
+                println!("Mensaje de error: {}", mensaje_error);
+                //let _ = enviar_mensaje(mensaje_error, &mut stream);
+                return;
             }
         };
         if mensaje == "GET" {
@@ -59,7 +61,8 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let mensaje_error = "ERROR: \"".to_owned() + &error + "\"";
+                println!("Mensaje de error: {}", mensaje_error);
                 let _ = enviar_mensaje(mensaje_error, &mut stream);
                 continue;
             }
@@ -68,6 +71,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
             Ok(calculadora) => calculadora,
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                println!("Mensaje de error: {}", mensaje_error);
                 let _ = enviar_mensaje(mensaje_error, &mut stream);
                 continue; //cual de las 2 irá?
                 //return;
