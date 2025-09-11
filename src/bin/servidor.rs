@@ -76,14 +76,14 @@ fn leer_operacion(
             }
         };
         let mensaje_log = mensaje.to_owned();
-        let _ = logger.send(LogMessage::Info(format!("{}", mensaje_log)));
+        let _ = logger.send(LogMessage::Info(mensaje_log));
         if mensaje == "GET" {
             break;
         }
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
                 error_recuperable(mensaje_error, logger, &mut socket);
                 continue;
             }
@@ -122,7 +122,9 @@ fn finalizar(
     println!("VALUE {}", valor);
 
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
-    let _ = logger.send(LogMessage::Info(format!("{}", mensaje)));
+
+    let mensaje_log = mensaje.to_owned();
+    let _ = logger.send(LogMessage::Info(mensaje_log));
     let _ = enviar_mensaje(&mensaje, &mut socket);
 }
 

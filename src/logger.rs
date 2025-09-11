@@ -30,7 +30,6 @@ impl Logger {
             LogMessage::Error(s) => {
                 let _ = self.archivo.write_all(b"[Error]: ");
                 let _ = self.archivo.write_all(s.as_bytes());
-                
             }
         }
         let _ = self.archivo.write_all(b"\n");
