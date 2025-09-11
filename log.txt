@@ -1,46 +1,46 @@
 [INFO]: OP + 5
-[INFO]: OK
+[Error]: OK
 [INFO]: OP * 3
-[INFO]: OK
+[Error]: OK
 [INFO]: OP + 2
-[INFO]: OK
+[Error]: OK
 [INFO]: OP - 5
-[INFO]: OK
+[Error]: OK
 [INFO]: OP /6
 [Error]: ERROR: "Operación invalida"
 [INFO]: OP * 4
-[INFO]: OK
+[Error]: OK
 [INFO]: OP + 3
-[INFO]: OK
+[Error]: OK
 [INFO]: OP sdfvbn- 4
 [Error]: ERROR: "Operación invalida"
 [INFO]: OP / 3
-[INFO]: OK
+[Error]: OK
 [INFO]: OP * 5
-[INFO]: OK
+[Error]: OK
 [INFO]: OP + 8
-[INFO]: OK
+[Error]: OK
 [INFO]: OP - 3 - -
 [Error]: ERROR: "Operación invalida"
 [INFO]: OP / 1
-[INFO]: OK
+[Error]: OK
 [INFO]: OP * 2
-[INFO]: OK
+[Error]: OK
 [INFO]: OP + 8
-[INFO]: OK
+[Error]: OK
 [INFO]: OP - 5
-[INFO]: OK
+[Error]: OK
 [INFO]: OP / 2
-[INFO]: OK
+[Error]: OK
 [INFO]: OP * 3
-[INFO]: OK
+[Error]: OK
 [INFO]: OP + 5
-[INFO]: OK
+[Error]: OK
 [INFO]: OP - 8
-[INFO]: OK
+[Error]: OK
 [INFO]: OP / 6
-[INFO]: OK
+[Error]: OK
 [INFO]: OP * 7
-[INFO]: OK
+[Error]: OK
 [INFO]: GET
-[INFO]: VALUE 21
+[Error]: VALUE 21
