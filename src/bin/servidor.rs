@@ -1,14 +1,11 @@
 use std::env::args;
 use std::io::Error;
-use std::io::{Write};
 use std::net::{TcpListener, TcpStream};
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
 use tp_individual_2::io::*;
-
-
 static SERVER_ARGS: usize = 2;
 
 fn main() -> Result<(), ()> {
@@ -85,7 +82,8 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
             return;
         }
     };
-    println!("{}", valor);
-    let _ = stream.write(&valor.to_be_bytes());
+    println!("VALUE {}", valor);
+    let mensaje = "VALUE ".to_owned() + &valor.to_string();
+    let _ = enviar_mensaje(mensaje, &mut stream);
 }
 

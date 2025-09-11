@@ -1,7 +1,7 @@
 use std::env::args;
 use std::fs::File;
 use std::io::Error;
-use std::io::{BufRead, BufReader, Read};
+use std::io::{BufRead, BufReader};
 use std::net::TcpStream;
 use tp_individual_2::io::*;
 static CLIENT_ARGS: usize = 4;
@@ -45,11 +45,13 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     }
     let fin = "GET".to_string();
     enviar_mensaje(fin, &mut socket)?;
-    let mut num_buffer = [0u8; 4];
-    socket.read(&mut num_buffer)?;
-
-    let resultado = u32::from_be_bytes(num_buffer);
-    println!("{}", resultado);
-
+    let mensaje = match leer(&mut socket){
+            Ok(mensaje) =>{mensaje}
+            Err(error) =>{
+                eprint!("Error: \"{}\"", error);
+                return Ok(());
+            }
+        };
+    print!("{}",mensaje);
     Ok(())
 }
