@@ -11,6 +11,9 @@ use tp_individual_2::io::*;
 use tp_individual_2::logger::*;
 //use std::sync::{MutexGuard, PoisonError};
 static SERVER_ARGS: usize = 2;
+static ERROR: bool = true;
+static INFO: bool = false;
+
 
 use std::sync::mpsc;
 
@@ -84,7 +87,7 @@ fn leer_operacion(
             Ok(operation) => operation,
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
-                responder(mensaje_error, logger, &mut socket);
+                responder(mensaje_error, logger, &mut socket, ERROR);
                 continue;
             }
         };
@@ -96,7 +99,7 @@ fn leer_operacion(
             }
         };
         calculadora.apply(operation);
-        responder("OK".to_string(), logger, &mut socket);
+        responder("OK".to_string(), logger, &mut socket, INFO);
     }
     finalizar(socket, calculadora, logger);
 }
@@ -116,17 +119,25 @@ fn finalizar(
     };
     println!("VALUE {}", valor);
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
-    responder(mensaje, logger, &mut socket);
+    responder(mensaje, logger, &mut socket, INFO);
 }
 
 fn responder(
     mensaje: String,
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
-    socket: &mut TcpStream,
+    socket: &mut TcpStream, error: bool
 ) {
     let _ = enviar_mensaje(&mensaje, socket);
-    let _ = logger.send(LogMessage::Error(mensaje));
+    if error {
+        let _ = logger.send(LogMessage::Error(mensaje));
+    }
+    else {
+        let _ = logger.send(LogMessage::Info(mensaje));
+    }
+    
 }
+
+
 
 fn error_irrecuperable(mensaje: String, logger: &mut std::sync::mpsc::Sender<LogMessage>) {
     println!("Error: {}", mensaje);
