@@ -6,18 +6,17 @@ use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
 use tp_individual_2::io::*;
-static SERVER_ARGS: usize = 3;
+static SERVER_ARGS: usize = 2;
 
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != SERVER_ARGS {
         eprintln!("Error: \"Cantidad de argumentos inválido\"");
-        let app_name = &argv[0];
-        println!("{:?} <host> <puerto>", app_name);
         return Ok(());
     }
-    let ip = argv[1].to_owned();
-    let address = ip + ":" + &argv[2];
+    let partes: Vec<&str> = argv[1].split(':').collect();
+    let ip = partes[0].to_owned();
+    let address = ip + ":" + &partes[1];
     match server_run(&address) {
         Ok(_) => {}
         Err(error) => {

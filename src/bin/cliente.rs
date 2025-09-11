@@ -4,25 +4,23 @@ use std::io::Error;
 use std::io::{BufRead, BufReader};
 use std::net::TcpStream;
 use tp_individual_2::io::*;
-static CLIENT_ARGS: usize = 4;
+static CLIENT_ARGS: usize = 3;
 
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != CLIENT_ARGS {
         eprintln!("Error: \"Cantidad de argumentos inválido\"");
-        let app_name = &argv[0];
-        println!("{:?} <host> <puerto>", app_name);
         return Ok(());
     }
-    let ip = argv[1].to_owned();
-    let address = ip + ":" + &argv[2];
-    let nombre_archivo = &argv[3];
+    let partes: Vec<&str> = argv[1].split(':').collect();
+    let ip = partes[0].to_owned();
+    let address = ip + ":" + &partes[1];
+    let nombre_archivo = &argv[2];
     println!("Conectándome a {:?}", address);
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
         Err(error) => {
             eprint!("Error: \"{}\"", error);
-            //return Ok(());
         }
     }
     Ok(())
