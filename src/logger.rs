@@ -26,13 +26,13 @@ impl Logger {
             LogMessage::Info(s) => {
                 let _ = self.archivo.write_all(b"[INFO]: ");
                 let _ = self.archivo.write_all(s.as_bytes());
-                let _ = self.archivo.write_all(b"\n");
             }
             LogMessage::Error(s) => {
                 let _ = self.archivo.write_all(b"[Error]: ");
                 let _ = self.archivo.write_all(s.as_bytes());
-                let _ = self.archivo.write_all(b"\n");
+                
             }
         }
+        let _ = self.archivo.write_all(b"\n");
     }
 }

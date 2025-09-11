@@ -9,6 +9,7 @@ use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
 use tp_individual_2::io::*;
 use tp_individual_2::logger::*;
+//use std::sync::{MutexGuard, PoisonError};
 static SERVER_ARGS: usize = 2;
 
 use std::sync::mpsc;
@@ -48,9 +49,10 @@ fn server_run(address: &str) -> Result<(), Error> {
     let listener = TcpListener::bind(address)?;
     for client_stream in listener.incoming() {
         let calculadora_mutex = Arc::clone(&lock);
-        let tx_clone = tx.clone();
+        let mut tx_clone = tx.clone();
         let cliente = client_stream?;
-        let handle = thread::spawn(move || leer_operacion(cliente, calculadora_mutex, tx_clone));
+        let handle =
+            thread::spawn(move || leer_operacion(cliente, calculadora_mutex, &mut tx_clone));
         handles.push(handle);
     }
     for handle in handles {
@@ -63,34 +65,26 @@ fn server_run(address: &str) -> Result<(), Error> {
 fn leer_operacion(
     mut socket: TcpStream,
     calculadora: Arc<Mutex<Calculator>>,
-    logger: std::sync::mpsc::Sender<LogMessage>,
+    logger: &mut std::sync::mpsc::Sender<LogMessage>,
 ) {
     loop {
         let mensaje = match leer(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
-                println!("Error: {}", mensaje_error);
-                let _ = logger
-                    .send(LogMessage::Error(mensaje_error));
-                return;
+                let error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                return error_irrecuperable(error, logger);
             }
         };
-
-        let _ = logger
-            .send(LogMessage::Info(format!("{}", mensaje)))
-            ;
+        let mensaje_log = mensaje.to_owned();
+        let _ = logger.send(LogMessage::Info(format!("{}", mensaje_log)));
         if mensaje == "GET" {
             break;
         }
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
-                logger
-                    .send(LogMessage::Error(format!("{}", mensaje_error)))
-                    .unwrap();
-                let _ = enviar_mensaje(mensaje_error, &mut socket);
+                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                error_recuperable(mensaje_error, logger, &mut socket);
                 continue;
             }
         };
@@ -98,15 +92,13 @@ fn leer_operacion(
             Ok(calculadora) => calculadora,
             Err(error) => {
                 let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
-                let _ = logger
-                    .send(LogMessage::Info(mensaje_error))
-                    ;
+                let _ = logger.send(LogMessage::Info(mensaje_error));
                 //println!("Mensaje de error: {}", mensaje_error);
                 return;
             }
         };
         calculadora.apply(operation);
-        let _ = enviar_mensaje("OK".to_string(), &mut socket);
+        let _ = enviar_mensaje(&"OK".to_string(), &mut socket);
         logger.send(LogMessage::Info("OK".to_string())).unwrap();
     }
     finalizar(socket, calculadora, logger);
@@ -116,24 +108,34 @@ fn leer_operacion(
 fn finalizar(
     mut socket: TcpStream,
     calculadora: Arc<Mutex<Calculator>>,
-    logger: std::sync::mpsc::Sender<LogMessage>,
+    logger: &mut std::sync::mpsc::Sender<LogMessage>,
 ) {
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(error) => {
             let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
-            let _ = logger
-                .send(LogMessage::Error(format!("{}", mensaje_error)));
-                
-            let _ = enviar_mensaje(mensaje_error, &mut socket);
+            println!("Error: {}", mensaje_error);
+            let _ = logger.send(LogMessage::Error(mensaje_error));
             return;
         }
     };
     println!("VALUE {}", valor);
 
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
-    let _ = logger
-        .send(LogMessage::Info(format!("{}", mensaje)))
-        ;
-    let _ = enviar_mensaje(mensaje, &mut socket);
+    let _ = logger.send(LogMessage::Info(format!("{}", mensaje)));
+    let _ = enviar_mensaje(&mensaje, &mut socket);
+}
+
+fn error_recuperable(
+    mensaje: String,
+    logger: &mut std::sync::mpsc::Sender<LogMessage>,
+    socket: &mut TcpStream,
+) {
+    let _ = enviar_mensaje(&mensaje, socket);
+    let _ = logger.send(LogMessage::Error(mensaje));
+}
+
+fn error_irrecuperable(mensaje: String, logger: &mut std::sync::mpsc::Sender<LogMessage>) {
+    println!("Error: {}", mensaje);
+    let _ = logger.send(LogMessage::Error(mensaje));
 }

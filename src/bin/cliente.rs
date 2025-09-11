@@ -36,12 +36,12 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion;
         //println!("El mensaje es {}", mensaje);
-        enviar_mensaje(mensaje, &mut socket)?;
+        enviar_mensaje(&mensaje, &mut socket)?;
         let _respuesta = leer(&mut socket)?;
         //println!("{}", _respuesta);
     }
     let fin = "GET".to_string();
-    enviar_mensaje(fin, &mut socket)?;
+    enviar_mensaje(&fin, &mut socket)?;
     let mensaje = leer(&mut socket)?;
     print!("{}", mensaje);
     Ok(())
