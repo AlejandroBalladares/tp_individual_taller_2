@@ -41,7 +41,7 @@ fn main() -> Result<(), ()> {
 /// y realiza las operaciones pertinentes
 fn server_run(address: &str) -> Result<(), Error> {
     let (tx, rx) = mpsc::channel::<LogMessage>();
-    let mut archivo = File::create("./logger.txt")?;
+    let mut archivo = File::create("./log.txt")?;
     thread::spawn(move || {
             for msg in rx {
                 match msg {
