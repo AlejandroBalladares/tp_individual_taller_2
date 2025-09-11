@@ -22,12 +22,6 @@ pub fn leer(socket: &mut TcpStream) -> Result<String, Error> {
     Ok(mensaje)
 }
 
-
-
-
-
-
-
 /*
 #[cfg(test)]
 mod tests {
@@ -70,5 +64,5 @@ impl Write for MockStream {
         let valor = enviar_mensaje(mensaje,mock_stream);
         assert!(valor.is_ok());
     }
-} 
+}
 */
