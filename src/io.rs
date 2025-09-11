@@ -1,6 +1,6 @@
-use std::net::{TcpStream};
-use std::io::{Read, Write};
 use std::io::Error;
+use std::io::{Read, Write};
+use std::net::TcpStream;
 
 pub fn enviar_mensaje(mensaje: String, socket: &mut TcpStream) -> Result<(), Error> {
     let size_be = (mensaje.len() as u32).to_be_bytes();

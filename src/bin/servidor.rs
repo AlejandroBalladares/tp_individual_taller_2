@@ -45,10 +45,11 @@ fn server_run(address: &str) -> Result<(), Error> {
 
 pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>) {
     loop {
-        let mensaje = match leer(&mut stream){
-            Ok(mensaje) =>{mensaje}
-            Err(error) =>{
-                let _ = enviar_mensaje(error.to_string(), &mut stream);
+        let mensaje = match leer(&mut stream) {
+            Ok(mensaje) => mensaje,
+            Err(error) => {
+                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let _ = enviar_mensaje(mensaje_error, &mut stream);
                 continue;
             }
         };
@@ -58,15 +59,16 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                let _ = enviar_mensaje(error.to_string(), &mut stream);
+                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let _ = enviar_mensaje(mensaje_error, &mut stream);
                 continue;
             }
         };
         let mut calculadora = match calculadora.lock() {
             Ok(calculadora) => calculadora,
             Err(error) => {
-                let _ = enviar_mensaje(error.to_string(), &mut stream);
-                print!("Error: \"{}\"", error); //corregir
+                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let _ = enviar_mensaje(mensaje_error, &mut stream);
                 continue; //cual de las 2 irá?
                 //return;
             }
@@ -77,8 +79,8 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(error) => {
-            let _ = enviar_mensaje(error.to_string(), &mut stream);
-            eprint!("Error: \"{}\"", error);
+            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+            let _ = enviar_mensaje(mensaje_error, &mut stream);
             return;
         }
     };
@@ -86,4 +88,3 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
     let _ = enviar_mensaje(mensaje, &mut stream);
 }
-

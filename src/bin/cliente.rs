@@ -41,17 +41,17 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
 
         //Leo si la operación salió bien o dio error
         let respuesta = leer(&mut socket)?;
-        println!("{}",respuesta);
+        println!("{}", respuesta);
     }
     let fin = "GET".to_string();
     enviar_mensaje(fin, &mut socket)?;
-    let mensaje = match leer(&mut socket){
-            Ok(mensaje) =>{mensaje}
-            Err(error) =>{
-                eprint!("Error: \"{}\"", error);
-                return Ok(());
-            }
-        };
-    print!("{}",mensaje);
+    let mensaje = match leer(&mut socket) {
+        Ok(mensaje) => mensaje,
+        Err(error) => {
+            eprint!("Error: \"{}\"", error);
+            return Ok(());
+        }
+    };
+    print!("{}", mensaje);
     Ok(())
 }
