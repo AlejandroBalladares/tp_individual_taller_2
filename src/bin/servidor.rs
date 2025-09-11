@@ -16,7 +16,7 @@ fn main() -> Result<(), ()> {
     }
     let partes: Vec<&str> = argv[1].split(':').collect();
     let ip = partes[0].to_owned();
-    let address = ip + ":" + &partes[1];
+    let address = ip + ":" + partes[1];
     match server_run(&address) {
         Ok(_) => {}
         Err(error) => {
@@ -60,7 +60,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + &error + "\"";
+                let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
                 println!("Mensaje de error: {}", mensaje_error);
                 let _ = enviar_mensaje(mensaje_error, &mut stream);
                 continue;

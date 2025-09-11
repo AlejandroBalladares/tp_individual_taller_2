@@ -14,7 +14,7 @@ fn main() -> Result<(), ()> {
     }
     let partes: Vec<&str> = argv[1].split(':').collect();
     let ip = partes[0].to_owned();
-    let address = ip + ":" + &partes[1];
+    let address = ip + ":" + partes[1];
     let nombre_archivo = &argv[2];
     println!("Conectándome a {:?}", address);
     match client_run(&address, nombre_archivo) {
