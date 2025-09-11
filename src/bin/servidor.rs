@@ -73,8 +73,7 @@ pub fn leer_operacion(mut stream: TcpStream, calculadora: Arc<Mutex<Calculator>>
                 let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
                 println!("Mensaje de error: {}", mensaje_error);
                 let _ = enviar_mensaje(mensaje_error, &mut stream);
-                continue; //cual de las 2 irá?
-                //return;
+                return;
             }
         };
         calculadora.apply(operation);
