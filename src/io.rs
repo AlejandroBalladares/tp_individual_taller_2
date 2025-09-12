@@ -30,6 +30,39 @@ pub fn recibir_mensaje(socket: &mut TcpStream) -> Result<String, Error> {
     Ok(mensaje)
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::net::{TcpListener, TcpStream};
+
+    #[test]
+    fn enviar_un_mensaje_pasa() {
+        let _listener = TcpListener::bind("0.0.0.0:8080").unwrap();
+        let mut socket = TcpStream::connect("127.0.0.1:8080").unwrap();
+        let mensaje = "Soy un mensaje".to_string();
+
+        let resultado = enviar_mensaje(&mensaje, &mut socket);
+        assert!(resultado.is_ok());
+        //let valor = resultado.unwrap();
+        //assert_eq!(valor, mensaje);
+    }
+/*
+    #[test]
+    fn recibir_un_mensaje_pasa() {
+        let listener = TcpListener::bind("0.0.0.0:8080").unwrap();
+        let mut socket = TcpStream::connect("127.0.0.1:8080").unwrap();
+        let mensaje = "Soy un mensaje".to_string();
+
+        let _ = enviar_mensaje(&mensaje, &mut socket);
+
+        let mut tupla= listener.accept().unwrap();
+        let resultado = recibir_mensaje(&mut tupla.0).unwrap();
+        assert_eq!(resultado, mensaje);
+        //let valor = resultado.unwrap();
+        //assert_eq!(valor, mensaje);
+    } */
+   
+}
 /*
 #[cfg(test)]
 mod tests {
