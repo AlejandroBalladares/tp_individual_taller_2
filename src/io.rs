@@ -11,13 +11,21 @@ pub fn enviar_mensaje(mensaje: &String, socket: &mut TcpStream) -> Result<(), Er
 }
 
 ///Recibe un socket, devuelve un Ok(string) con el mensaje leido
-pub fn leer(socket: &mut TcpStream) -> Result<String, Error> {
+pub fn recibir_mensaje(socket: &mut TcpStream) -> Result<String, Error> {
     let mut num_buffer = [0u8; 4];
     socket.read_exact(&mut num_buffer)?;
     let size = u32::from_be_bytes(num_buffer);
     let mut mensaje_buf = vec![0; size as usize];
     socket.read_exact(&mut mensaje_buf)?;
-    let mensaje_str = std::str::from_utf8(&mensaje_buf).expect("Error al leer nombre");
+    let mensaje_str = match std::str::from_utf8(&mensaje_buf) {
+        Ok(mensaje_str) => mensaje_str,
+        Err(_) => {
+            return Err(Error::new(
+                std::io::ErrorKind::InvalidData,
+                "\"Error de lectura\"",
+            ));
+        }
+    };
     let mensaje = mensaje_str.to_owned();
     Ok(mensaje)
 }

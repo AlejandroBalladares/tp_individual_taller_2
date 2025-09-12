@@ -1,5 +1,7 @@
+use crate::io::*;
 use std::fs::File;
 use std::io::Write;
+use std::net::TcpStream;
 
 pub enum LogMessage {
     Info(String),
@@ -34,4 +36,23 @@ impl Logger {
         }
         let _ = self.archivo.write_all(b"\n");
     }
+}
+
+pub fn responder(
+    mensaje: String,
+    logger: &mut std::sync::mpsc::Sender<LogMessage>,
+    socket: &mut TcpStream,
+    error: bool,
+) {
+    let _ = enviar_mensaje(&mensaje, socket);
+    if error {
+        let _ = logger.send(LogMessage::Error(mensaje));
+    } else {
+        let _ = logger.send(LogMessage::Info(mensaje));
+    }
+}
+
+pub fn error_irrecuperable(mensaje: String, logger: &mut std::sync::mpsc::Sender<LogMessage>) {
+    println!("Error: {}", mensaje);
+    let _ = logger.send(LogMessage::Error(mensaje));
 }

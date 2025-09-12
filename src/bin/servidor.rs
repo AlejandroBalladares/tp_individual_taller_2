@@ -4,6 +4,7 @@ use std::io::Error;
 //use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 use std::str::FromStr;
+use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
@@ -13,9 +14,6 @@ use tp_individual_2::logger::*;
 static SERVER_ARGS: usize = 2;
 static ERROR: bool = true;
 static INFO: bool = false;
-
-
-use std::sync::mpsc;
 
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
@@ -71,7 +69,7 @@ fn leer_operacion(
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
 ) {
     loop {
-        let mensaje = match leer(&mut socket) {
+        let mensaje = match recibir_mensaje(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
                 let error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
@@ -120,26 +118,4 @@ fn finalizar(
     println!("VALUE {}", valor);
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
     responder(mensaje, logger, &mut socket, INFO);
-}
-
-fn responder(
-    mensaje: String,
-    logger: &mut std::sync::mpsc::Sender<LogMessage>,
-    socket: &mut TcpStream, error: bool
-) {
-    let _ = enviar_mensaje(&mensaje, socket);
-    if error {
-        let _ = logger.send(LogMessage::Error(mensaje));
-    }
-    else {
-        let _ = logger.send(LogMessage::Info(mensaje));
-    }
-    
-}
-
-
-
-fn error_irrecuperable(mensaje: String, logger: &mut std::sync::mpsc::Sender<LogMessage>) {
-    println!("Error: {}", mensaje);
-    let _ = logger.send(LogMessage::Error(mensaje));
 }
