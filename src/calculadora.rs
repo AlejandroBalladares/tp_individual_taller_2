@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+
 #[derive(Default)]
 pub struct Calculator {
     value: u8,
@@ -21,6 +22,10 @@ impl FromStr for Operation {
         let [_codigo, operation, operand] = tokens.try_into().map_err(|_| "parsing error")?;
         let operand: u8 = operand.parse().map_err(|_| "parsing error")?;
 
+        if operation == "/" && operand == 0{
+            return Err("division by zero");
+        }
+
         match operation {
             "+" => Ok(Operation::Add(operand)),
             "-" => Ok(Operation::Sub(operand)),
@@ -36,7 +41,7 @@ impl Calculator {
         self.value
     }
 
-    pub fn apply(&mut self, op: Operation) {
+    pub fn apply(&mut self, op: Operation){
         match op {
             Operation::Add(operand) => self.value = self.value.wrapping_add(operand),
             Operation::Sub(operand) => self.value = self.value.wrapping_sub(operand),

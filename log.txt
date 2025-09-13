@@ -26,5 +26,841 @@
 [INFO]: OK
 [INFO]: OP * 2
 [INFO]: OK
+[INFO]: OP / 0
+[Error]: ERROR: "division by zero"
 [INFO]: GET
 [INFO]: VALUE 16
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 3
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 10
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP multiplicar 3
+[Error]: ERROR: "parsing error"
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP OK
+[Error]: ERROR: "parsing error"
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP - 7
+[INFO]: OK
+[INFO]: OP /6
+[Error]: ERROR: "parsing error"
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 300
+[Error]: ERROR: "parsing error"
+[INFO]: OP + 10
+[INFO]: OK
+[INFO]: OP sdfvbn- 4
+[Error]: ERROR: "parsing error"
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 3 - -
+[Error]: ERROR: "parsing error"
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP / 0
+[Error]: ERROR: "division by zero"
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: GET
+[INFO]: VALUE 152
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 7
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 3
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 10
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 3
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 10
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 10
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 10
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 10
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 7
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 10
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 10
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 1
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 10
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 10
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 10
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 1
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 9
+[INFO]: OK
+[INFO]: OP - 10
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 7
+[INFO]: OK
+[INFO]: OP / 8
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 4
+[INFO]: OK
+[INFO]: OP * 9
+[INFO]: OK
+[INFO]: OP + 4
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 8
+[INFO]: OK
+[INFO]: OP + 3
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 7
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 6
+[INFO]: OK
+[INFO]: OP - 6
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 3
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 1
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 9
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 6
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 9
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 3
+[INFO]: OK
+[INFO]: OP / 5
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 7
+[INFO]: OK
+[INFO]: OP - 2
+[INFO]: OK
+[INFO]: OP / 10
+[INFO]: OK
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 4
+[INFO]: OK
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: GET
+[INFO]: VALUE 28
