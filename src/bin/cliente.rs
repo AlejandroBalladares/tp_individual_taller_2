@@ -35,7 +35,7 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion;
-        println!("El mensaje es {}", mensaje);
+        //println!("El mensaje es {}", mensaje);
         enviar_mensaje(&mensaje, &mut socket)?;
         let respuesta = recibir_mensaje(&mut socket)?;
         if respuesta != "OK" {

@@ -81,14 +81,13 @@ fn leer_operacion(
                 return error_irrecuperable(error, logger);
             }
         };
-        let mensaje_log = mensaje.to_owned();
-        let _ = logger.send(LogMessage::Info(mensaje_log));
+        let _ = logger.send(LogMessage::Info(mensaje.to_owned()));
         let tokens: Vec<&str> = mensaje.split_whitespace().collect();
         match tokens[0] {
             "GET" => break,
             "OP" => {}
             _ => {
-                let mensaje_error = "ERROR: \" unexpected message \"".to_string();
+                let mensaje_error = "ERROR: \"unexpected message\"".to_string();
                 responder(mensaje_error, logger, &mut socket, ERROR);
             }
         }
