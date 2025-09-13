@@ -20,7 +20,7 @@ fn main() -> Result<(), ()> {
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
         Err(error) => {
-            eprint!("Error: \"{}\"", error);
+            eprintln!("ERROR: \"{}\"", error);
         }
     }
     Ok(())
@@ -35,14 +35,16 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion;
-        //println!("El mensaje es {}", mensaje);
+        println!("El mensaje es {}", mensaje);
         enviar_mensaje(&mensaje, &mut socket)?;
-        let _respuesta = recibir_mensaje(&mut socket)?;
-        //println!("{}", _respuesta);
+        let respuesta = recibir_mensaje(&mut socket)?;
+        if respuesta != "OK" {
+            eprintln!("{}", respuesta);
+            }
     }
     let fin = "GET".to_string();
     enviar_mensaje(&fin, &mut socket)?;
     let mensaje = recibir_mensaje(&mut socket)?;
-    print!("{}", mensaje);
+    println!("{}", mensaje);
     Ok(())
 }

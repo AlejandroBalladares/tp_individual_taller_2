@@ -1,19 +1,19 @@
 [INFO]: OP + 5
 [INFO]: OK
-[INFO]: OP * 3
-[INFO]: OK
+[INFO]: OP multiplicar 3
+[Error]: ERROR: "parsing error"
 [INFO]: OP + 2
 [INFO]: OK
 [INFO]: OP - 5
 [INFO]: OK
 [INFO]: OP /6
-[Error]: ERROR: "Operación invalida"
+[Error]: ERROR: "parsing error"
 [INFO]: OP * 4
 [INFO]: OK
 [INFO]: OP + 3
 [INFO]: OK
 [INFO]: OP sdfvbn- 4
-[Error]: ERROR: "Operación invalida"
+[Error]: ERROR: "parsing error"
 [INFO]: OP / 3
 [INFO]: OK
 [INFO]: OP * 5
@@ -21,7 +21,99 @@
 [INFO]: OP + 8
 [INFO]: OK
 [INFO]: OP - 3 - -
-[Error]: ERROR: "Operación invalida"
+[Error]: ERROR: "parsing error"
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: GET
+[INFO]: VALUE 77
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP multiplicar 3
+[Error]: ERROR: "parsing error"
+[INFO]: OP + 2
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP /6
+[Error]: ERROR: "parsing error"
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 300
+[Error]: ERROR: "parsing error"
+[INFO]: OP sdfvbn- 4
+[Error]: ERROR: "parsing error"
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 3 - -
+[Error]: ERROR: "parsing error"
+[INFO]: OP / 1
+[INFO]: OK
+[INFO]: OP * 2
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP / 2
+[INFO]: OK
+[INFO]: OP * 3
+[INFO]: OK
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP - 8
+[INFO]: OK
+[INFO]: OP / 6
+[INFO]: OK
+[INFO]: OP * 7
+[INFO]: OK
+[INFO]: GET
+[INFO]: VALUE 77
+[INFO]: OP + 5
+[INFO]: OK
+[INFO]: OP multiplicar 3
+[Error]: ERROR: "parsing error"
+[INFO]: OP OK
+[Error]: ERROR: "parsing error"
+[INFO]: OP - 5
+[INFO]: OK
+[INFO]: OP /6
+[Error]: ERROR: "parsing error"
+[INFO]: OP * 4
+[INFO]: OK
+[INFO]: OP + 300
+[Error]: ERROR: "parsing error"
+[INFO]: OP sdfvbn- 4
+[Error]: ERROR: "parsing error"
+[INFO]: OP / 3
+[INFO]: OK
+[INFO]: OP * 5
+[INFO]: OK
+[INFO]: OP + 8
+[INFO]: OK
+[INFO]: OP - 3 - -
+[Error]: ERROR: "parsing error"
 [INFO]: OP / 1
 [INFO]: OK
 [INFO]: OP * 2

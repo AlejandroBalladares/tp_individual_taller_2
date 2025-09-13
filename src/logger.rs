@@ -53,6 +53,6 @@ pub fn responder(
 }
 
 pub fn error_irrecuperable(mensaje: String, logger: &mut std::sync::mpsc::Sender<LogMessage>) {
-    println!("Error: {}", mensaje);
+    println!("{}", mensaje);
     let _ = logger.send(LogMessage::Error(mensaje));
 }
