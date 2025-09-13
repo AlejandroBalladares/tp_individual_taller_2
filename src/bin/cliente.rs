@@ -40,7 +40,7 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
         let respuesta = recibir_mensaje(&mut socket)?;
         if respuesta != "OK" {
             eprintln!("{}", respuesta);
-            }
+        }
     }
     let fin = "GET".to_string();
     enviar_mensaje(&fin, &mut socket)?;

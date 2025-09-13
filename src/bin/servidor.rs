@@ -15,6 +15,11 @@ static SERVER_ARGS: usize = 2;
 static ERROR: bool = true;
 static INFO: bool = false;
 
+pub enum Mensajes {
+    GET,
+    OK,
+}
+
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != SERVER_ARGS {
@@ -78,9 +83,16 @@ fn leer_operacion(
         };
         let mensaje_log = mensaje.to_owned();
         let _ = logger.send(LogMessage::Info(mensaje_log));
-        if mensaje == "GET" {
-            break;
+        let tokens: Vec<&str> = mensaje.split_whitespace().collect();
+        match tokens[0] {
+            "GET" => break,
+            "OP" => {}
+            _ => {
+                let mensaje_error = "ERROR: \" unexpected message \"".to_string();
+                responder(mensaje_error, logger, &mut socket, ERROR);
+            }
         }
+
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
@@ -115,7 +127,7 @@ fn finalizar(
             return error_irrecuperable(mensaje_error, logger);
         }
     };
-    println!("VALUE {}", valor);
+    println!("{}", valor);
     let mensaje = "VALUE ".to_owned() + &valor.to_string();
     responder(mensaje, logger, &mut socket, INFO);
 }
