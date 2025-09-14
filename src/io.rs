@@ -4,9 +4,11 @@ use std::net::TcpStream;
 
 ///Recibe un mensaje y un socket, realiza las operaciones necesarias para poder enviar el mensaje
 pub fn enviar_mensaje(mensaje: &String, socket: &mut TcpStream) -> Result<(), Error> {
-    let size_be = (mensaje.len() as u32).to_be_bytes();
+    let size_be = (mensaje.len() as u32 + 1).to_be_bytes();
     let _ = socket.write(&size_be)?;
     let _ = socket.write(mensaje.as_bytes())?;
+    let _ = socket.write("\n".as_bytes())?;
+
     Ok(())
 }
 

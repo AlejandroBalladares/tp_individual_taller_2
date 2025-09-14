@@ -16,11 +16,11 @@ fn main() -> Result<(), ()> {
     let ip = partes[0].to_owned();
     let address = ip + ":" + partes[1];
     let nombre_archivo = &argv[2];
-    println!("Conectándome a {:?}", address);
+    //println!("Conectándome a {:?}", address);
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
         Err(error) => {
-            eprintln!("ERROR: \"{}\"", error);
+            eprint!("ERROR: \"{}\"", error);
         }
     }
     Ok(())
@@ -38,8 +38,8 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
         //println!("El mensaje es {}", mensaje);
         enviar_mensaje(&mensaje, &mut socket)?;
         let respuesta = recibir_mensaje(&mut socket)?;
-        if respuesta != "OK" {
-            eprintln!("{}", respuesta);
+        if respuesta != "OK\n" {
+            eprint!("{}", respuesta);
         }
     }
     let fin = "GET".to_string();
