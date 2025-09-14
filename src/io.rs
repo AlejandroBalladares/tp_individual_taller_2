@@ -43,7 +43,7 @@ mod tests {
 
         let resultado = enviar_mensaje(&mensaje, &mut socket);
         assert!(resultado.is_ok());
-        
+
         let mut tupla = listener.accept().unwrap();
         let resultado = recibir_mensaje(&mut tupla.0).unwrap();
         assert_eq!(resultado, mensaje);
