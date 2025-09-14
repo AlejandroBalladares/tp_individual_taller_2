@@ -55,34 +55,30 @@ mod tests {
     //use crate::calculadora::*;
 
     use super::*;
-   
 
     #[test]
     fn operacion_suma_funciona() {
         let mut calculadora = Calculator::default();
-        let operation = Operation::from_str(&"OP + 3".to_string()).unwrap();
+        let operation = Operation::from_str("OP + 3").unwrap();
         calculadora.apply(operation);
         assert_eq!(calculadora.value, 3);
-
     }
 
     #[test]
     fn operacion_resta_funciona() {
         let mut calculadora = Calculator::default();
-        let suma = Operation::from_str(&"OP + 3".to_string()).unwrap();
-        let resta = Operation::from_str(&"OP - 2".to_string()).unwrap();
+        let suma = Operation::from_str("OP + 3").unwrap();
+        let resta = Operation::from_str("OP - 2").unwrap();
         calculadora.apply(suma);
         calculadora.apply(resta);
         assert_eq!(calculadora.value, 1);
-
-
     }
 
     #[test]
     fn operacion_multiplicacion_funciona() {
         let mut calculadora = Calculator::default();
-        let suma = Operation::from_str(&"OP + 3".to_string()).unwrap();
-        let multiplicacion = Operation::from_str(&"OP * 2".to_string()).unwrap();
+        let suma = Operation::from_str("OP + 3").unwrap();
+        let multiplicacion = Operation::from_str("OP * 2").unwrap();
         calculadora.apply(suma);
         calculadora.apply(multiplicacion);
         assert_eq!(calculadora.value, 6);
@@ -91,17 +87,15 @@ mod tests {
     #[test]
     fn operacion_division_funciona() {
         let mut calculadora = Calculator::default();
-        let suma = Operation::from_str(&"OP + 10".to_string()).unwrap();
-        let division = Operation::from_str(&"OP / 2".to_string()).unwrap();
+        let suma = Operation::from_str("OP + 10").unwrap();
+        let division = Operation::from_str("OP / 2").unwrap();
         calculadora.apply(suma);
         calculadora.apply(division);
         assert_eq!(calculadora.value, 5);
-
     }
 
     #[test]
     fn dividir_por_cero_da_error() {
-        assert!(Operation::from_str(&"OP / 0".to_string()).is_err());
-
+        assert!(Operation::from_str("OP / 0").is_err());
     }
 }

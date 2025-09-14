@@ -62,8 +62,8 @@ fn server_run(address: &str) -> Result<(), Error> {
         handles.push(handle);
     }
     for handle in handles {
-        match handle.join(){
-            Ok(_) => {},
+        match handle.join() {
+            Ok(_) => {}
             Err(e) => {
                 eprint!("Error: \"{:?}\"", e);
             }
