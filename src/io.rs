@@ -37,7 +37,7 @@ mod tests {
 
     #[test]
     fn enviar_un_mensaje_pasa() {
-        let _listener = TcpListener::bind("0.0.0.0:8080").unwrap();
+        let listener = TcpListener::bind("0.0.0.0:8080").unwrap();
         let mut socket = TcpStream::connect("127.0.0.1:8080").unwrap();
         let mensaje = "Soy un mensaje".to_string();
 
@@ -45,6 +45,9 @@ mod tests {
         assert!(resultado.is_ok());
         //let valor = resultado.unwrap();
         //assert_eq!(valor, mensaje);
+        let mut tupla= listener.accept().unwrap();
+        let resultado = recibir_mensaje(&mut tupla.0).unwrap();
+        assert_eq!(resultado, mensaje);
     }
     /*
     #[test]

@@ -45,6 +45,21 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     let fin = "GET".to_string();
     enviar_mensaje(&fin, &mut socket)?;
     let mensaje = recibir_mensaje(&mut socket)?;
-    println!("{}", mensaje);
+    let tokens: Vec<&str> = mensaje.split_whitespace().collect();
+    println!("{}", tokens[1]);
     Ok(())
 }
+
+/*
+use assert_cmd::Command;
+
+#[test]
+fn test_version_command() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin("your_crate_name")?; // Replace with your crate name
+    cmd.arg("--version")
+       .assert()
+       .success()
+       .stdout(is_match(r"^your_crate_name \d+\.\d+\.\d+")) // Check version output format
+       .stderr(""); // Ensure no error output
+    Ok(())
+} */
