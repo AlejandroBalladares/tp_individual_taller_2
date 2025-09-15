@@ -34,7 +34,7 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
 
     for linea in reader.lines() {
         let operacion = linea?;
-        let mensaje = "OP".to_owned() + " " + &operacion;
+        let mensaje = "OP".to_owned() + " " + &operacion + "\n";
         //println!("El mensaje es {}", mensaje);
         enviar_mensaje(&mensaje, &mut socket)?;
         let respuesta = recibir_mensaje(&mut socket)?;
@@ -42,7 +42,7 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
             eprint!("{}", respuesta);
         }
     }
-    let fin = "GET".to_string();
+    let fin = "GET\n".to_string();
     enviar_mensaje(&fin, &mut socket)?;
     let mensaje = recibir_mensaje(&mut socket)?;
     let tokens: Vec<&str> = mensaje.split_whitespace().collect();

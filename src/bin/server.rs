@@ -82,7 +82,7 @@ fn leer_operacion(
         let mensaje = match recibir_mensaje(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
-                let error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
                 return error_irrecuperable(error, logger);
             }
         };
@@ -92,7 +92,7 @@ fn leer_operacion(
             "GET" => break,
             "OP" => {}
             _ => {
-                let mensaje_error = "ERROR: \"unexpected message\"".to_string();
+                let mensaje_error = "ERROR: \"unexpected message\"".to_string() + "\n";
                 responder(mensaje_error, logger, &mut socket, ERROR);
             }
         }
@@ -100,7 +100,7 @@ fn leer_operacion(
         let operation = match Operation::from_str(&mensaje) {
             Ok(operation) => operation,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
+                let mensaje_error = "ERROR: \"".to_owned() + error + "\"" + "\n";
                 responder(mensaje_error, logger, &mut socket, ERROR);
                 continue;
             }
@@ -108,12 +108,12 @@ fn leer_operacion(
         let mut calculadora = match calculadora.lock() {
             Ok(calculadora) => calculadora,
             Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
                 return error_irrecuperable(mensaje_error, logger);
             }
         };
         calculadora.apply(operation);
-        responder("OK".to_string(), logger, &mut socket, INFO);
+        responder("OK\n".to_string(), logger, &mut socket, INFO);
     }
     finalizar(socket, calculadora, logger);
 }
@@ -127,11 +127,11 @@ fn finalizar(
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
             return error_irrecuperable(mensaje_error, logger);
         }
     };
     println!("{}", valor);
-    let mensaje = "VALUE ".to_owned() + &valor.to_string();
+    let mensaje = "VALUE ".to_owned() + &valor.to_string() + "\n";
     responder(mensaje, logger, &mut socket, INFO);
 }
