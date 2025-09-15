@@ -1,30 +1,34 @@
-[INFO]: OP * 3
+[INFO]: OP + 5
 
 [INFO]: OK
 
-[INFO]: OP + 2
+[INFO]: OP multiplicar 3
 
-[INFO]: OK
+[Error]: ERROR: "parsing error"
+
+[INFO]: OP OK
+
+[Error]: ERROR: "parsing error"
 
 [INFO]: OP - 5
 
 [INFO]: OK
 
-[INFO]: OP / 6
+[INFO]: OP /6
 
-[INFO]: OK
+[Error]: ERROR: "parsing error"
 
 [INFO]: OP * 4
 
 [INFO]: OK
 
-[INFO]: OP + 3
+[INFO]: OP + 300
 
-[INFO]: OK
+[Error]: ERROR: "parsing error"
 
-[INFO]: OP - 4
+[INFO]: OP sdfvbn- 4
 
-[INFO]: OK
+[Error]: ERROR: "parsing error"
 
 [INFO]: OP / 3
 
@@ -38,9 +42,9 @@
 
 [INFO]: OK
 
-[INFO]: OP - 3
+[INFO]: OP - 3 - -
 
-[INFO]: OK
+[Error]: ERROR: "parsing error"
 
 [INFO]: OP / 1
 
@@ -50,45 +54,11 @@
 
 [INFO]: OK
 
-[INFO]: OP + 8
+[INFO]: OP / 0
 
-[INFO]: OK
+[Error]: ERROR: "division by zero"
 
-[INFO]: OP - 5
+[INFO]: GET
 
-[INFO]: OK
-
-[INFO]: OP / 2
-
-[INFO]: OK
-
-[INFO]: OP * 3
-
-[INFO]: OK
-
-[INFO]: OP + 5
-
-[INFO]: OK
-
-[INFO]: OP - 8
-
-[INFO]: OK
-
-[INFO]: OP / 6
-
-[INFO]: OK
-
-[INFO]: OP * 7
-
-[INFO]: OK
-
-[INFO]: OP + 2
-
-[INFO]: OK
-
-[INFO]: OP - 8
-
-[INFO]: OK
-
-[Error]: ERROR: "failed to fill whole buffer"
+[INFO]: VALUE 16
 

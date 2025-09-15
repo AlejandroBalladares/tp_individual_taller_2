@@ -1,19 +1,16 @@
 use std::io::Error;
 use std::io::{Read, Write};
-use std::net::TcpStream;
 
 ///Recibe un mensaje y un socket, realiza las operaciones necesarias para poder enviar el mensaje
-pub fn enviar_mensaje(mensaje: &String, socket: &mut TcpStream) -> Result<(), Error> {
+pub fn enviar_mensaje(mensaje: &String, socket: &mut impl Write) -> Result<(), Error> {
     let size_be = (mensaje.len() as u32).to_be_bytes();
     let _ = socket.write(&size_be)?;
     let _ = socket.write(mensaje.as_bytes())?;
-    //let _ = socket.write("\n".as_bytes())?;
-
     Ok(())
 }
 
 ///Recibe un socket, devuelve un Ok(string) con el mensaje leido
-pub fn recibir_mensaje(socket: &mut TcpStream) -> Result<String, Error> {
+pub fn recibir_mensaje(socket: &mut impl Read) -> Result<String, Error> {
     let mut num_buffer = [0u8; 4];
     socket.read_exact(&mut num_buffer)?;
     let size = u32::from_be_bytes(num_buffer);
@@ -35,19 +32,32 @@ pub fn recibir_mensaje(socket: &mut TcpStream) -> Result<String, Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::net::{TcpListener, TcpStream};
-
+    use std::io::BufReader;
+    use std::io::Cursor;
     #[test]
     fn enviar_un_mensaje_pasa() {
-        let listener = TcpListener::bind("0.0.0.0:8080").unwrap();
-        let mut socket = TcpStream::connect("127.0.0.1:8080").unwrap();
         let mensaje = "Soy un mensaje".to_string();
+        let mut output = Vec::new();
+        assert!(enviar_mensaje(&mensaje, &mut output).is_ok());
+    }
 
-        let resultado = enviar_mensaje(&mensaje, &mut socket);
-        assert!(resultado.is_ok());
+    #[test]
+    fn leer_un_mensaje_pasa() {
+        let contenido = "Soy un mensaje".to_string();
+        let tam = (contenido.len() as u32).to_be_bytes();
+        let mensaje = contenido.as_bytes();
 
-        let mut tupla = listener.accept().unwrap();
-        let resultado = recibir_mensaje(&mut tupla.0).unwrap();
-        assert_eq!(resultado, mensaje);
+        let mut resultado_vec = Vec::new();
+        resultado_vec.extend_from_slice(&tam);
+        resultado_vec.extend_from_slice(mensaje);
+
+        let cursor = Cursor::new(resultado_vec);
+        let mut reader = BufReader::new(cursor);
+        let respuesta = recibir_mensaje(&mut reader).unwrap();
+        assert_eq!(respuesta, contenido);
     }
 }
+
+/*tamano [0, 0, 0, 14] mensaje [83, 111, 121, 32, 117, 110, 32, 109, 101, 110, 115, 97, 106, 101]
+[0, 0, 0, 14, 83, 111, 121, 32, 117, 110, 32, 109, 101, 110, 115, 97, 106, 101]
+ */
