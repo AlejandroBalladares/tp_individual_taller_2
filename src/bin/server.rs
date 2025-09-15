@@ -1,24 +1,16 @@
 use std::env::args;
 use std::fs::File;
 use std::io::Error;
-//use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 use std::str::FromStr;
-use std::sync::mpsc;
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, mpsc};
 use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
 use tp_individual_2::io::*;
 use tp_individual_2::logger::*;
-//use std::sync::{MutexGuard, PoisonError};
 static SERVER_ARGS: usize = 2;
 static ERROR: bool = true;
 static INFO: bool = false;
-
-pub enum Mensajes {
-    GET,
-    OK,
-}
 
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();

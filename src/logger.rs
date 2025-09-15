@@ -34,10 +34,10 @@ impl Logger {
                 let _ = self.archivo.write_all(s.as_bytes());
             }
         }
-        let _ = self.archivo.write_all(b"\n");
     }
 }
 
+///Logea el mensaje y lo envia al cliente
 pub fn responder(
     mensaje: String,
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
@@ -52,6 +52,7 @@ pub fn responder(
     }
 }
 
+///Logea un error irrecuperable y lo imprime por pantalla
 pub fn error_irrecuperable(mensaje: String, logger: &mut std::sync::mpsc::Sender<LogMessage>) {
     print!("{}", mensaje);
     let _ = logger.send(LogMessage::Error(mensaje));

@@ -4,8 +4,8 @@ use std::io::{Read, Write};
 ///Recibe un mensaje y un socket, realiza las operaciones necesarias para poder enviar el mensaje
 pub fn enviar_mensaje(mensaje: &String, socket: &mut impl Write) -> Result<(), Error> {
     let size_be = (mensaje.len() as u32).to_be_bytes();
-    let _ = socket.write(&size_be)?;
-    let _ = socket.write(mensaje.as_bytes())?;
+    socket.write_all(&size_be)?;
+    socket.write_all(mensaje.as_bytes())?;
     Ok(())
 }
 

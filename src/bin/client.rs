@@ -16,7 +16,6 @@ fn main() -> Result<(), ()> {
     let ip = partes[0].to_owned();
     let address = ip + ":" + partes[1];
     let nombre_archivo = &argv[2];
-    //println!("Conectándome a {:?}", address);
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
         Err(error) => {
@@ -35,7 +34,6 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = "OP".to_owned() + " " + &operacion + "\n";
-        //println!("El mensaje es {}", mensaje);
         enviar_mensaje(&mensaje, &mut socket)?;
         let respuesta = recibir_mensaje(&mut socket)?;
         if respuesta != "OK\n" {
@@ -49,17 +47,3 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     println!("{}", tokens[1]);
     Ok(())
 }
-
-/*
-use assert_cmd::Command;
-
-#[test]
-fn test_version_command() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin("your_crate_name")?; // Replace with your crate name
-    cmd.arg("--version")
-       .assert()
-       .success()
-       .stdout(is_match(r"^your_crate_name \d+\.\d+\.\d+")) // Check version output format
-       .stderr(""); // Ensure no error output
-    Ok(())
-} */

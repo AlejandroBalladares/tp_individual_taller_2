@@ -52,8 +52,6 @@ impl Calculator {
 
 #[cfg(test)]
 mod tests {
-    //use crate::calculadora::*;
-
     use super::*;
 
     #[test]
