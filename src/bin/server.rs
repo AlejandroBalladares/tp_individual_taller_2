@@ -67,7 +67,7 @@ fn server_run(address: &str) -> Result<(), Error> {
 ///Lee los mensajes recibidos y realiza el calculo pertinente
 fn handle_conection(
     mut socket: TcpStream,
-    calculadora: Arc<Mutex<Calculator>>,
+    mut calculadora: Arc<Mutex<Calculator>>,
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
 ) {
     loop {
@@ -81,39 +81,25 @@ fn handle_conection(
         let _ = logger.send(LogMessage::Info(mensaje.to_owned()));
         let tokens: Vec<&str> = mensaje.split_whitespace().collect();
         match tokens[0] {
-            "GET" => break,
-            "OP" => {}
+            "GET" => return finalizar(&mut socket, &mut calculadora, logger),
+            "OP" => match aplicar_operacion(&mut socket, &mut calculadora, logger, mensaje) {
+                Ok(()) => {}
+                Err(_e) => {
+                    break;
+                }
+            },
             _ => {
                 let mensaje_error = "ERROR: \"unexpected message\"".to_string() + "\n";
                 responder(mensaje_error, logger, &mut socket, ERROR);
             }
         }
-
-        let operation = match Operation::from_str(&mensaje) {
-            Ok(operation) => operation,
-            Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + error + "\"" + "\n";
-                responder(mensaje_error, logger, &mut socket, ERROR);
-                continue;
-            }
-        };
-        let mut calculadora = match calculadora.lock() {
-            Ok(calculadora) => calculadora,
-            Err(error) => {
-                let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
-                return error_irrecuperable(mensaje_error, logger);
-            }
-        };
-        calculadora.apply(operation);
-        responder("OK\n".to_string(), logger, &mut socket, INFO);
     }
-    finalizar(socket, calculadora, logger);
 }
 
 ///Imprime el valor actual de la calculadora y lo envia al cliente que lo pidio
 fn finalizar(
-    mut socket: TcpStream,
-    calculadora: Arc<Mutex<Calculator>>,
+    socket: &mut TcpStream,
+    calculadora: &mut Arc<Mutex<Calculator>>,
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
 ) {
     let valor = match calculadora.lock() {
@@ -125,5 +111,32 @@ fn finalizar(
     };
     println!("{}", valor);
     let mensaje = "VALUE ".to_owned() + &valor.to_string() + "\n";
-    responder(mensaje, logger, &mut socket, INFO);
+    responder(mensaje, logger, socket, INFO);
+}
+
+fn aplicar_operacion(
+    socket: &mut TcpStream,
+    calculadora: &mut Arc<Mutex<Calculator>>,
+    logger: &mut std::sync::mpsc::Sender<LogMessage>,
+    mensaje: String,
+) -> Result<(), Error> {
+    let operation = match Operation::from_str(&mensaje) {
+        Ok(operation) => operation,
+        Err(error) => {
+            let mensaje_error = "ERROR: \"".to_owned() + error + "\"" + "\n";
+            responder(mensaje_error, logger, socket, ERROR);
+            return Ok(());
+        }
+    };
+    let mut calculadora = match calculadora.lock() {
+        Ok(calculadora) => calculadora,
+        Err(error) => {
+            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
+            error_irrecuperable(mensaje_error, logger);
+            return Err(Error::new(std::io::ErrorKind::InvalidData, "\"Error\""));
+        }
+    };
+    calculadora.apply(operation);
+    responder("OK\n".to_string(), logger, socket, INFO);
+    Ok(())
 }
