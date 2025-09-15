@@ -42,6 +42,16 @@ mod tests {
     }
 
     #[test]
+    fn enviar_un_mensaje_pasa_2() {
+        let mensaje = "Soy un mensaje".to_string();
+        let mut output = Vec::new();
+        enviar_mensaje(&mensaje, &mut output).unwrap();
+        let output = output[4..].to_vec(); //ignoro el tamaño
+        let respuesta = String::from_utf8(output).expect("Not UTF-8");
+        assert_eq!(mensaje, respuesta);
+    }
+
+    #[test]
     fn leer_un_mensaje_pasa() {
         let contenido = "Soy un mensaje".to_string();
         let tam = (contenido.len() as u32).to_be_bytes();
@@ -57,7 +67,3 @@ mod tests {
         assert_eq!(respuesta, contenido);
     }
 }
-
-/*tamano [0, 0, 0, 14] mensaje [83, 111, 121, 32, 117, 110, 32, 109, 101, 110, 115, 97, 106, 101]
-[0, 0, 0, 14, 83, 111, 121, 32, 117, 110, 32, 109, 101, 110, 115, 97, 106, 101]
- */

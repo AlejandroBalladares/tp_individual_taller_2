@@ -58,7 +58,7 @@ fn server_run(address: &str) -> Result<(), Error> {
         let mut tx_clone = tx.clone();
         let cliente = client_stream?;
         let handle =
-            thread::spawn(move || leer_operacion(cliente, calculadora_mutex, &mut tx_clone));
+            thread::spawn(move || handle_conection(cliente, calculadora_mutex, &mut tx_clone));
         handles.push(handle);
     }
     for handle in handles {
@@ -73,7 +73,7 @@ fn server_run(address: &str) -> Result<(), Error> {
 }
 
 ///Lee los mensajes recibidos y realiza el calculo pertinente
-fn leer_operacion(
+fn handle_conection(
     mut socket: TcpStream,
     calculadora: Arc<Mutex<Calculator>>,
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
