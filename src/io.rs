@@ -26,7 +26,7 @@ pub fn recibir_mensaje(socket: &mut impl Read) -> Result<String, Error> {
         }
     };
     let mensaje = mensaje_str.to_owned();
-    //let mensaje = mensaje + "\n";
+    let mensaje = mensaje + "\n";
     Ok(mensaje)
 }
 

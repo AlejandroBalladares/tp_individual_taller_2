@@ -74,7 +74,7 @@ fn handle_conection(
         let mensaje = match recibir_mensaje(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
-                let error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
+                let error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
                 return error_irrecuperable(error, logger);
             }
         };
@@ -89,7 +89,7 @@ fn handle_conection(
                 }
             },
             _ => {
-                let mensaje_error = "ERROR: \"unexpected message\"".to_string() + "\n";
+                let mensaje_error = "ERROR: \"unexpected message\"".to_string();
                 responder(mensaje_error, logger, &mut socket, ERROR);
             }
         }
@@ -105,12 +105,12 @@ fn finalizar(
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
+            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
             return error_irrecuperable(mensaje_error, logger);
         }
     };
     println!("{}", valor);
-    let mensaje = "VALUE ".to_owned() + &valor.to_string() + "\n";
+    let mensaje = "VALUE ".to_owned() + &valor.to_string();
     responder(mensaje, logger, socket, INFO);
 }
 
@@ -123,7 +123,7 @@ fn aplicar_operacion(
     let operation = match Operation::from_str(&mensaje) {
         Ok(operation) => operation,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + error + "\"" + "\n";
+            let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
             responder(mensaje_error, logger, socket, ERROR);
             return Ok(());
         }
@@ -131,12 +131,12 @@ fn aplicar_operacion(
     let mut calculadora = match calculadora.lock() {
         Ok(calculadora) => calculadora,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"" + "\n";
+            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
             error_irrecuperable(mensaje_error, logger);
             return Err(Error::new(std::io::ErrorKind::InvalidData, "\"Error\""));
         }
     };
     calculadora.apply(operation);
-    responder("OK\n".to_string(), logger, socket, INFO);
+    responder("OK".to_string(), logger, socket, INFO);
     Ok(())
 }
