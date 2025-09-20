@@ -118,7 +118,7 @@ fn finalizar(
         }
     };
     println!("{}", valor);
-    let mensaje = format!("VALUE {}", &valor.to_string());
+    let mensaje = format!("VALUE {}\n", valor);
     responder(mensaje, logger, socket, INFO);
 }
 
