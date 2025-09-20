@@ -6,7 +6,7 @@ use std::str::FromStr;
 use std::sync::{Arc, Mutex, mpsc};
 use std::thread::{self, JoinHandle};
 use tp_individual_2::calculadora::*;
-use tp_individual_2::io::*;
+use tp_individual_2::protocol::*;
 use tp_individual_2::logger::*;
 static SERVER_ARGS: usize = 2;
 static ERROR: bool = true;

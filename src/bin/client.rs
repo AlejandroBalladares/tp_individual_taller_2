@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::Error;
 use std::io::{BufRead, BufReader};
 use std::net::TcpStream;
-use tp_individual_2::io::*;
+use tp_individual_2::protocol::*;
 static CLIENT_ARGS: usize = 3;
 
 fn main() -> Result<(), ()> {
@@ -39,8 +39,9 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
         let mensaje = format!("OP {}\n", operacion);
         enviar_mensaje(&mensaje, &mut socket)?;
         let respuesta = recibir_mensaje(&mut socket)?;
-        if respuesta != "OK\n" {
-            eprint!("{}", respuesta);
+        let respuesta = respuesta.trim();
+        if respuesta != "OK" {
+            eprintln!("{}", respuesta);
         }
     }
     let fin = "GET\n".to_string();
