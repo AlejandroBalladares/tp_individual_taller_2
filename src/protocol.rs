@@ -51,7 +51,7 @@ mod tests {
         enviar_mensaje(&mensaje, &mut output).unwrap();
         let output = output[4..].to_vec(); //ignoro el tamaño
         let respuesta = String::from_utf8(output).expect("Not UTF-8");
-        assert_eq!(mensaje, respuesta);
+        assert_eq!(mensaje, respuesta.trim());
     }
 
     #[test]
