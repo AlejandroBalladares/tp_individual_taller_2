@@ -18,13 +18,17 @@ impl FromStr for Operation {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let tokens: Vec<&str> = s.split_whitespace().collect();
-        let [_codigo, operation, operand] = tokens.try_into().map_err(|_| "parsing error")?;
-        let operand: u8 = operand.parse().map_err(|_| "parsing error")?;
+        if tokens.len() != 3 {
+            return Err("parsing error");
+        }
+        //let _cmd = tokens[0];
+        let operation = tokens[1];
+        let operand_str = tokens[2];
 
+        let operand: u8 = operand_str.parse().map_err(|_| "parsing error")?;
         if operation == "/" && operand == 0 {
             return Err("division by zero");
         }
-
         match operation {
             "+" => Ok(Operation::Add(operand)),
             "-" => Ok(Operation::Sub(operand)),

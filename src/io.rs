@@ -6,6 +6,7 @@ pub fn enviar_mensaje(mensaje: &String, socket: &mut impl Write) -> Result<(), E
     let size_be = (mensaje.len() as u32).to_be_bytes();
     socket.write_all(&size_be)?;
     socket.write_all(mensaje.as_bytes())?;
+    socket.flush()?;
     Ok(())
 }
 
@@ -26,7 +27,7 @@ pub fn recibir_mensaje(socket: &mut impl Read) -> Result<String, Error> {
         }
     };
     let mensaje = mensaje_str.to_owned();
-    let mensaje = mensaje + "\n";
+    //let mensaje = mensaje + "\n";
     Ok(mensaje)
 }
 

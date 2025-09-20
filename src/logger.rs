@@ -34,6 +34,7 @@ impl Logger {
                 let _ = self.archivo.write_all(s.as_bytes());
             }
         }
+        let _ = self.archivo.flush();
     }
 }
 
@@ -45,6 +46,7 @@ pub fn responder(
     error: bool,
 ) {
     let _ = enviar_mensaje(&mensaje, socket);
+    //let _ = socket.flush();
     if error {
         let _ = logger.send(LogMessage::Error(mensaje));
     } else {

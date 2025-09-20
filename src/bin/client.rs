@@ -13,8 +13,11 @@ fn main() -> Result<(), ()> {
         return Ok(());
     }
     let partes: Vec<&str> = argv[1].split(':').collect();
-    let ip = partes[0].to_owned();
-    let address = ip + ":" + partes[1];
+    if partes.len() != 2 || partes[0].is_empty() || partes[1].is_empty() {
+        eprintln!("Error: \"Dirección inválida (usar IP:PUERTO)\"");
+        return Ok(());
+    }
+    let address = format!("{}:{}", partes[0], partes[1]);
     let nombre_archivo = &argv[2];
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
@@ -33,14 +36,14 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
 
     for linea in reader.lines() {
         let operacion = linea?;
-        let mensaje = "OP".to_owned() + " " + &operacion;
+        let mensaje = format!("OP {}\n", operacion);
         enviar_mensaje(&mensaje, &mut socket)?;
         let respuesta = recibir_mensaje(&mut socket)?;
         if respuesta != "OK\n" {
             eprint!("{}", respuesta);
         }
     }
-    let fin = "GET".to_string();
+    let fin = "GET\n".to_string();
     enviar_mensaje(&fin, &mut socket)?;
     let mensaje = recibir_mensaje(&mut socket)?;
     let tokens: Vec<&str> = mensaje.split_whitespace().collect();

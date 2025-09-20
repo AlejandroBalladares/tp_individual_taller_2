@@ -19,8 +19,11 @@ fn main() -> Result<(), ()> {
         return Ok(());
     }
     let partes: Vec<&str> = argv[1].split(':').collect();
-    let ip = partes[0].to_owned();
-    let address = ip + ":" + partes[1];
+    if partes.len() != 2 || partes[0].is_empty() || partes[1].is_empty() {
+        eprintln!("Error: \"Dirección inválida (usar IP:PUERTO)\"");
+        return Ok(());
+    }
+    let address = format!("{}:{}", partes[0], partes[1]);
     match server_run(&address) {
         Ok(_) => {}
         Err(error) => {
@@ -74,12 +77,17 @@ fn handle_conection(
         let mensaje = match recibir_mensaje(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
-                let error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
-                return error_irrecuperable(error, logger);
+                let mensaje_error = format!("ERROR \"{}\"\n", error);
+                return error_irrecuperable(mensaje_error, logger);
             }
         };
         let _ = logger.send(LogMessage::Info(mensaje.to_owned()));
         let tokens: Vec<&str> = mensaje.split_whitespace().collect();
+        if tokens.is_empty() {
+            let mensaje_error = "ERROR \"mensaje vacío\"\n".to_string();
+            responder(mensaje_error, logger, &mut socket, ERROR);
+            continue;
+        }
         match tokens[0] {
             "GET" => return finalizar(&mut socket, &mut calculadora, logger),
             "OP" => match aplicar_operacion(&mut socket, &mut calculadora, logger, mensaje) {
@@ -89,7 +97,7 @@ fn handle_conection(
                 }
             },
             _ => {
-                let mensaje_error = "ERROR: \"unexpected message\"".to_string();
+                let mensaje_error = "ERROR: \"unexpected message\"\n".to_string();
                 responder(mensaje_error, logger, &mut socket, ERROR);
             }
         }
@@ -105,12 +113,12 @@ fn finalizar(
     let valor = match calculadora.lock() {
         Ok(mutex) => mutex.value() as u32,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+            let mensaje_error = format!("ERROR \"{}\"\n", error);
             return error_irrecuperable(mensaje_error, logger);
         }
     };
     println!("{}", valor);
-    let mensaje = "VALUE ".to_owned() + &valor.to_string();
+    let mensaje = format!("VALUE {}", &valor.to_string());
     responder(mensaje, logger, socket, INFO);
 }
 
@@ -123,7 +131,7 @@ fn aplicar_operacion(
     let operation = match Operation::from_str(&mensaje) {
         Ok(operation) => operation,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + error + "\"";
+            let mensaje_error = format!("ERROR \"{}\"\n", error);
             responder(mensaje_error, logger, socket, ERROR);
             return Ok(());
         }
@@ -131,12 +139,12 @@ fn aplicar_operacion(
     let mut calculadora = match calculadora.lock() {
         Ok(calculadora) => calculadora,
         Err(error) => {
-            let mensaje_error = "ERROR: \"".to_owned() + &error.to_string() + "\"";
+            let mensaje_error = format!("ERROR \"{}\"\n", error);
             error_irrecuperable(mensaje_error, logger);
             return Err(Error::new(std::io::ErrorKind::InvalidData, "\"Error\""));
         }
     };
     calculadora.apply(operation);
-    responder("OK".to_string(), logger, socket, INFO);
+    responder("OK\n".to_string(), logger, socket, INFO);
     Ok(())
 }
