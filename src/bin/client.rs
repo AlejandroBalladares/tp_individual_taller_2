@@ -9,12 +9,12 @@ static CLIENT_ARGS: usize = 3;
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != CLIENT_ARGS {
-        eprintln!("Error: \"Cantidad de argumentos inválido\"");
+        eprintln!("Error \"Cantidad de argumentos inválido\"");
         return Ok(());
     }
     let partes: Vec<&str> = argv[1].split(':').collect();
     if partes.len() != 2 || partes[0].is_empty() || partes[1].is_empty() {
-        eprintln!("Error: \"Dirección inválida (usar IP:PUERTO)\"");
+        eprintln!("Error \"Dirección inválida (usar IP:PUERTO)\"");
         return Ok(());
     }
     let address = format!("{}:{}", partes[0], partes[1]);
@@ -22,7 +22,7 @@ fn main() -> Result<(), ()> {
     match client_run(&address, nombre_archivo) {
         Ok(_) => {}
         Err(error) => {
-            eprint!("ERROR: \"{}\"", error);
+            eprint!("ERROR \"{}\"", error);
         }
     }
     Ok(())
@@ -49,7 +49,7 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     let mensaje = recibir_mensaje(&mut socket)?;
     let tokens: Vec<&str> = mensaje.split_whitespace().collect();
     if tokens.is_empty() {
-        eprintln!("ERROR: no se pudo imprimir el valor");
+        eprintln!("ERROR no se pudo imprimir el valor");
     } else {
         println!("{}", tokens[1]);
     }

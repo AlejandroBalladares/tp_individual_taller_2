@@ -15,19 +15,19 @@ static INFO: bool = false;
 fn main() -> Result<(), ()> {
     let argv = args().collect::<Vec<String>>();
     if argv.len() != SERVER_ARGS {
-        eprintln!("Error: \"Cantidad de argumentos inválido\"");
+        eprintln!("Error \"Cantidad de argumentos inválido\"");
         return Ok(());
     }
     let partes: Vec<&str> = argv[1].split(':').collect();
     if partes.len() != 2 || partes[0].is_empty() || partes[1].is_empty() {
-        eprintln!("Error: \"Dirección inválida (usar IP:PUERTO)\"");
+        eprintln!("Error \"Dirección inválida (usar IP:PUERTO)\"");
         return Ok(());
     }
     let address = format!("{}:{}", partes[0], partes[1]);
     match server_run(&address) {
         Ok(_) => {}
         Err(error) => {
-            eprint!("Error: \"{}\"", error);
+            eprint!("Error \"{}\"", error);
         }
     }
     Ok(())
@@ -60,7 +60,7 @@ fn server_run(address: &str) -> Result<(), Error> {
         match handle.join() {
             Ok(_) => {}
             Err(e) => {
-                eprint!("Error: \"{:?}\"", e);
+                eprint!("Error \"{:?}\"", e);
             }
         }
     }
@@ -97,7 +97,7 @@ fn handle_conection(
                 }
             },
             _ => {
-                let mensaje_error = "ERROR: \"unexpected message\"\n".to_string();
+                let mensaje_error = "ERROR \"unexpected message\"\n".to_string();
                 responder(mensaje_error, logger, &mut socket, ERROR);
             }
         }
