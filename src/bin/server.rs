@@ -74,7 +74,7 @@ fn handle_conection(
     logger: &mut std::sync::mpsc::Sender<LogMessage>,
 ) {
     loop {
-        let mensaje = match recibir_mensaje2(&mut socket) {
+        let mensaje = match recibir_mensaje(&mut socket) {
             Ok(mensaje) => mensaje,
             Err(error) => {
                 let mensaje_error = format!("ERROR \"{}\"\n", error);

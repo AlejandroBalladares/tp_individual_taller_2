@@ -37,23 +37,21 @@ fn client_run(address: &str, nombre_archivo: &String) -> Result<(), Error> {
     for linea in reader.lines() {
         let operacion = linea?;
         let mensaje = format!("OP {}\n", operacion);
-        print!("La linea actual es {}",mensaje);
         enviar_mensaje(&mensaje, &mut socket)?;
-        let respuesta = recibir_mensaje2(&mut socket)?;
+        let respuesta = recibir_mensaje(&mut socket)?;
         let respuesta = respuesta.trim();
-        if respuesta != "OKasdf" {
+        if respuesta != "OK" {
             eprintln!("{}", respuesta);
         }
     }
     let fin = "GET\n".to_string();
-    println!("Envio un get");
     enviar_mensaje(&fin, &mut socket)?;
-    let mensaje = recibir_mensaje2(&mut socket)?;
+    let mensaje = recibir_mensaje(&mut socket)?;
     let tokens: Vec<&str> = mensaje.split_whitespace().collect();
     if tokens.is_empty() {
-            eprintln!("ERROR: algo no anduvo bien rey");
-            return Ok(())
-        }
-    println!("{}", tokens[1]);
+        eprintln!("ERROR: no se pudo imprimir el valor");
+    } else {
+        println!("{}", tokens[1]);
+    }
     Ok(())
 }

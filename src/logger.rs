@@ -45,9 +45,7 @@ pub fn responder(
     socket: &mut TcpStream,
     error: bool,
 ) {
-    print!("EL mensaje que voy a enviar es {}", mensaje);
     let _ = enviar_mensaje(&mensaje, socket);
-    //let _ = socket.flush();
     if error {
         let _ = logger.send(LogMessage::Error(mensaje));
     } else {
