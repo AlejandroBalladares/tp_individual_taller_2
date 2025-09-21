@@ -1,10 +1,11 @@
 use std::io::Error;
 use std::io::{Read, Write};
+//10 = \n
 
 ///Recibe un mensaje y un socket, realiza las operaciones necesarias para poder enviar el mensaje
 pub fn enviar_mensaje(mensaje: &String, socket: &mut impl Write) -> Result<(), Error> {
-    let size_be = (mensaje.len() as u32 + 1).to_be_bytes();
-    socket.write_all(&size_be)?;
+    //let size_be = (mensaje.len() as u32 + 1).to_be_bytes();
+    //socket.write_all(&size_be)?;
     socket.write_all(mensaje.as_bytes())?;
     socket.write_all("\n".as_bytes())?;
     socket.flush()?;
@@ -13,12 +14,24 @@ pub fn enviar_mensaje(mensaje: &String, socket: &mut impl Write) -> Result<(), E
 
 ///Recibe un socket, devuelve un Ok(string) con el mensaje leido
 pub fn recibir_mensaje(socket: &mut impl Read) -> Result<String, Error> {
-    let mut num_buffer = [0u8; 4];
-    socket.read_exact(&mut num_buffer)?;
-    let size = u32::from_be_bytes(num_buffer);
-    let mut mensaje_buf = vec![0; size as usize];
-    socket.read_exact(&mut mensaje_buf)?;
-    let mensaje_str = match std::str::from_utf8(&mensaje_buf) {
+    //let mut num_buffer = [0u8; 4];
+    //socket.read_exact(&mut num_buffer)?;
+    //let size = u32::from_be_bytes(num_buffer);
+    let mut mensaje_buf = vec![0; 1024 as usize];
+    //socket.read_exact(&mut mensaje_buf)?;
+    //let mut n = 0;
+    
+    let mut n = 0;
+    loop{
+        let bytes_leidos = socket.read(&mut mensaje_buf)?;
+        n += bytes_leidos;
+        //if bytes_leidos == 0{break;}
+        if mensaje_buf[n-1] == 10{break;}
+        
+        //println!("lo ultimo leido fue {} y el ultimo caracter es {:?}", bytes_leidos,mensaje_buf);
+    }
+    //println!("mensaje recibido {:?}", mensaje_buf);
+    let mensaje_str = match std::str::from_utf8(&mensaje_buf[0..n]) {
         Ok(mensaje_str) => mensaje_str,
         Err(_) => {
             return Err(Error::new(
@@ -29,6 +42,26 @@ pub fn recibir_mensaje(socket: &mut impl Read) -> Result<String, Error> {
     };
     let mensaje = mensaje_str.to_owned();
     //let mensaje = mensaje + "\n";
+    print!("EL MENSAJE QUE RECIBI FUE {}", mensaje);
+    Ok(mensaje)
+}
+
+//use std::net::TcpStream;
+use std::io::BufReader;
+use std::io::BufRead;
+
+pub fn recibir_mensaje2(socket: &mut impl Read) -> Result<String, Error> {
+    let buf_reader = BufReader::new(socket);
+    let message_vec: Vec<_> = buf_reader
+        .lines()
+        .map(|result| match result {
+            Ok(x) => x,
+            Err(_) => "".to_string(),
+        })
+        .take_while(|line| !line.is_empty())
+        .collect();
+    //message_vec.iter().for_each(|x| println!("{x}"));
+    let mensaje = message_vec.join(" ");
     Ok(mensaje)
 }
 
